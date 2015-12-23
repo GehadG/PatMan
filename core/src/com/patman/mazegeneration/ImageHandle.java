@@ -1,6 +1,8 @@
 package com.patman.mazegeneration;
 
 
+
+
 import java.awt.image.BufferedImage;
 
 import java.awt.*;
@@ -9,7 +11,10 @@ import static java.lang.Math.sqrt;
 
 
 public class ImageHandle {
-    public static void split() {
+    public ImageHandle() {
+    }
+
+    public  String[][] getMapArray() {
 
         Maze2D maze;
         maze = new Maze2D(12, 12);
@@ -48,10 +53,10 @@ public class ImageHandle {
                 }
             }
         }
-
+return map;
     }
 
-    public static BufferedImage getCroppedImage(BufferedImage source, double tolerance) {
+    public  BufferedImage getCroppedImage(BufferedImage source, double tolerance) {
 
         int baseColor = source.getRGB(0, 0);
 
@@ -81,7 +86,7 @@ public class ImageHandle {
         return destination;
     }
 
-    private static boolean colorWithinTolerance(int a, int b, double tolerance) {
+    private  boolean colorWithinTolerance(int a, int b, double tolerance) {
         int aAlpha = (int) ((a & 0xFF000000) >>> 24);
         int aRed = (int) ((a & 0x00FF0000) >>> 16);
         int aGreen = (int) ((a & 0x0000FF00) >>> 8);

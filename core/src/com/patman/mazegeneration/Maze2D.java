@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 
 
+
+
 public class Maze2D {
     private BufferedImage im;
 

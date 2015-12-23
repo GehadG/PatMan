@@ -11,10 +11,13 @@ import static java.lang.Math.sqrt;
 
 
 public class ImageHandle {
-    public ImageHandle() {
+   private String[][] map;
+    public ImageHandle(int x, int y) {
+
+        map = getMapArray(x,y);
     }
 
-    public  String[][] getMapArray(int wid, int len) {
+    private  String[][] getMapArray(int wid, int len) {
 
         Maze2D maze;
         maze = new Maze2D(wid, len);
@@ -54,7 +57,7 @@ public class ImageHandle {
                 }
             }
         }
-        System.out.println(imgs.length);
+
 return map;
     }
 
@@ -106,5 +109,9 @@ return map;
         double percentAway = distance / 510.0d;
 
         return (percentAway > tolerance);
+    }
+
+    public String[][] getMap() {
+        return map;
     }
 }

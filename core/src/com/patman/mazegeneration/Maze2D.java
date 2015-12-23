@@ -1,6 +1,6 @@
 package com.patman.mazegeneration;
 
-import com.badlogic.gdx.Gdx;
+
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -160,7 +160,7 @@ public class Maze2D {
         }
     }
 
-    public static final class Node {
+    public  class Node {
         private final Coordinate2D coord;
         private final List<Node> linkedNeighbours;
         private List<Node> neighbours;

@@ -14,21 +14,21 @@ public class ImageHandle {
     public ImageHandle() {
     }
 
-    public  String[][] getMapArray() {
+    public  String[][] getMapArray(int wid, int len) {
 
         Maze2D maze;
-        maze = new Maze2D(12, 12);
+        maze = new Maze2D(wid, len);
         maze.setIm(getCroppedImage(maze.getIm(), 0));
 
 
         BufferedImage image = maze.getIm();
 
-        int rows = image.getWidth() / 8;
-        int cols = image.getHeight() / 8;
+        int rows = image.getWidth() / 20;
+        int cols = image.getHeight() / 20;
         int chunks = rows * cols;
 
-        int chunkWidth = 8;
-        int chunkHeight = 8;
+        int chunkWidth = 20;
+        int chunkHeight =20;
         int count = 0;
         BufferedImage imgs[] = new BufferedImage[chunks];
         for (int x = 0; x < rows; x++) {
@@ -42,17 +42,19 @@ public class ImageHandle {
                 gr.dispose();
             }
         }
-        int dim = (int) sqrt(imgs.length);
-        String[][] map = new String[dim][dim];
-        for (int i = 0; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                if (imgs[(j * dim) + i].getRGB(imgs[i].getWidth() / 2, imgs[i].getHeight() / 2) == -1)
+        int width = 2*wid+1;
+        int length =2*len+1;
+        String[][] map = new String[width][length];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                if (imgs[(j * width) + i].getRGB(imgs[i].getWidth() / 2, imgs[i].getHeight() / 2) == -1)
                     map[i][j] = "p";
                 else {
                     map[i][j] = "w";
                 }
             }
         }
+        System.out.println(imgs.length);
 return map;
     }
 

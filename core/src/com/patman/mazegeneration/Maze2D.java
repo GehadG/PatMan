@@ -1,5 +1,7 @@
 package com.patman.mazegeneration;
 
+import com.badlogic.gdx.Gdx;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,11 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-
+import java.util.function.Predicate;
 
 
 public class Maze2D {
+
     private BufferedImage im;
 
     public BufferedImage getIm() {
@@ -27,6 +29,7 @@ public class Maze2D {
     }
 
     public Maze2D(int x, int y) {
+
         new Maze(x, y);
 
     }
@@ -129,8 +132,8 @@ public class Maze2D {
         }
 
         public BufferedImage draw() {
-            int cellWidth = 16;
-            int cellHeight = 16;
+            int cellWidth = 40;
+            int cellHeight = 40;
             int boardWidth = cellWidth * (xSize + 1);
             int boardHeight = cellHeight * (ySize + 1);
             BufferedImage im = new BufferedImage(boardWidth + cellWidth, boardHeight + cellHeight, BufferedImage.TYPE_INT_ARGB);
@@ -146,7 +149,7 @@ public class Maze2D {
                     int x2 = x1 + cellWidth;
                     int y2 = y1 + cellHeight;
                     g.setColor(Color.BLACK);
-                    g.setStroke(new BasicStroke(8));
+                    g.setStroke(new BasicStroke(20));
                     if (!n.isLinkedTo(n.minusY())) g.drawLine(x1, y1, x2, y1);
                     if (!n.isLinkedTo(n.plusY())) g.drawLine(x1, y2, x2, y2);
                     if (!n.isLinkedTo(n.minusX())) g.drawLine(x1, y1, x1, y2);
@@ -171,7 +174,12 @@ public class Maze2D {
 
         public Node linkRandomUnlinkedNeighbour() {
             List<Node> list = new ArrayList<>(getNeighbours());
-            list.removeIf(n -> n.linked);
+            list.removeIf(new Predicate<Node>() {
+                @Override
+                public boolean test(Node n) {
+                    return n.linked;
+                }
+            });
             if (list.isEmpty()) return null;
             Collections.shuffle(list);
             Node next = list.get(0);
@@ -186,7 +194,12 @@ public class Maze2D {
         public List<Node> getNeighbours() {
             if (neighbours == null) {
                 List<Node> nodes = new ArrayList<>(Arrays.asList(minusX(), plusX(), minusY(), plusY()));
-                nodes.removeIf(x -> x == null);
+                nodes.removeIf(new Predicate<Node>() {
+                    @Override
+                    public boolean test(Node x) {
+                        return x == null;
+                    }
+                });
                 neighbours = Collections.unmodifiableList(nodes);
             }
             return neighbours;

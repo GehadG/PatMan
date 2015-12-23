@@ -10,6 +10,6 @@ public class test  {
     public static void main(String[] args){
         ImageHandle imageHandle = new ImageHandle();
         imageHandle.getMapArray(12,12);
-        String testGit ="lolo";
+
     }
 }

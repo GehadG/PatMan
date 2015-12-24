@@ -77,6 +77,7 @@ public abstract class Character {
     }
 
     public void randomMove(ArrayList<Tile>walls){
+
         ArrayList<String> directions=new ArrayList<>();
         olderMove=oldMove;
         int s=0;

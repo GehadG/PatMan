@@ -1,8 +1,7 @@
 package com.fistbump.patman;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.patman.mazegeneration.ImageHandle;
-import com.patman.mazegeneration.Maze2D;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.patman.mazegeneration.TiledMaze;
 import com.patman.tiles.Tile;
 
@@ -13,8 +12,10 @@ public class test  {
    static Tile[][]map;
    static TiledMaze maze ;
     public static void main(String[] args){
-        maze = new TiledMaze();
+        Texture text = new Texture(Gdx.files.internal("Path.png"));
+       // maze = new TiledMaze();
         map = maze.getTileMap();
+
       /*  for(int i=0;i<19;i++)
         {
             for(int j=0;j<11;j++)

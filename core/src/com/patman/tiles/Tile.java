@@ -7,9 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Gehad on 23/12/2015.
  */
 public abstract class  Tile {
-    public static final int TILE_WIDTH =40;
-    public static final int TILE_HEIGHT =40;
+    public static  int TILE_WIDTH =160;
+    public static  int TILE_HEIGHT =160;
 
+    public Rectangle getBound() {
+        return bound;
+    }
 
     private int posX,posY;
     protected Rectangle bound;

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import java.util.ArrayList;
 
 /**
- * Created by Gehad on 24/12/2015.
+ * Created by Mariem on 24/12/2015.
  */
 public class Freez extends Character {
     private static ArrayList<Texture> up=new ArrayList<>();

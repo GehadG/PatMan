@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * Created by Gehad on 24/12/2015.
+ * Created by Mariem on 24/12/2015.
  */
 public abstract class Character {
     public static int length=160;

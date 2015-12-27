@@ -31,8 +31,8 @@ public class TiledMaze {
         int maxH=5;
         Tile.TILE_HEIGHT = height/((maxH*2)+1);
         Tile.TILE_WIDTH = Tile.TILE_HEIGHT;
-        Character.length=Tile.TILE_HEIGHT;
-        Character.width=Tile.TILE_HEIGHT;
+        Character.length= (int) (Tile.TILE_HEIGHT);
+        Character.width=(int) (Tile.TILE_HEIGHT);
         int maxW = width/Tile.TILE_HEIGHT;
         maxW -=1;
         maxW=maxW/2;

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.patman.tiles.Tile;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public abstract class Character {
     protected Rectangle bound;
     protected int movement;
     protected int health;
-
+    protected int Count=0;
     protected String oldMove;
     protected String olderMove;
     protected int frameCounterLeft=0;
@@ -33,8 +34,9 @@ public abstract class Character {
     public Character(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;
-        movement=Tile.TILE_HEIGHT/20;
-        this.oldMove="left";
+        movement=Tile.TILE_HEIGHT/15;
+        this.oldMove="right";
+        this.olderMove="right";
         bound=new Rectangle();
     }
 
@@ -57,6 +59,7 @@ public abstract class Character {
         }
         for(Tile f:walls){
             if(testBound.overlaps(f.getBound())){
+                System.out.println(f.getPosX()+","+f.getPosY());
                 return  false;
             }
         }
@@ -77,47 +80,24 @@ public abstract class Character {
     }
 
     public void randomMove(ArrayList<Tile>walls){
+if(Count==0)
+    initFirst(walls);
+        Count++;
 
-        ArrayList<String> directions=new ArrayList<>();
-        olderMove=oldMove;
-        int s=0;
+        if(compDirection(oldMove,walls)){
 
 
-            if (canMove("up", walls)) {
+            oldMove=getCom(oldMove,walls);
 
-                directions.add("up");
-                s++;
-            }
-            if (canMove("down", walls)) {
-                directions.add("down");
-                s++;
-            }
-            if (canMove("left", walls)) {
-                directions.add("left");
-                s++;
-            }
-            if (canMove("right", walls)) {
-                directions.add("right");
-                s++;
-            }
-
-            if(directions.contains(oldMove)&&directions.contains(reverseDirection(oldMove)))
-            {
-                directions.remove(reverseDirection(oldMove));
-                s--;
-            }
-        if(compDirection(olderMove,walls)) {
-            directions.remove(olderMove);
-            s--;
         }
-            Collections.shuffle(directions);
+        else if(canMove(oldMove,walls)){
 
-            Random rn = new Random();
-            int i = Math.abs(rn.nextInt() % s);
+        }
+        else{
+            oldMove=reverseDirection(oldMove);
 
-            move(directions.get(i));
-            oldMove=directions.get(i);
-
+        }
+move(oldMove);
 
     }
     public  Texture getTexture(){
@@ -153,7 +133,68 @@ public abstract class Character {
         }
         return false;
     }
+    private String getCom(String direction,ArrayList<Tile>Walls){
+        ArrayList<String> dir=new ArrayList<>();
+        switch (direction){
+            case"up":
+                if(canMove("right",Walls))
+                    dir.add("right");
+                if(canMove("left", Walls))
+                    dir.add("left");
 
+            case"down":
+                if(canMove("right",Walls))
+                    dir.add("right");
+                if(canMove("left", Walls))
+                    dir.add("left");
+
+            case"left":
+                if(canMove("up",Walls))
+                    dir.add("up");
+                if(canMove("down", Walls))
+                    dir.add("down");
+            case"right":
+                if(canMove("up",Walls))
+                    dir.add("up");
+                if(canMove("down", Walls))
+                    dir.add("down");        }
+
+        Collections.shuffle(dir);
+        return dir.get(0);
+    }
+protected void initFirst(ArrayList<Tile> walls){
+    ArrayList<String> directions=new ArrayList<>();
+
+    int s=0;
+
+
+    if (canMove("up", walls)) {
+
+        directions.add("up");
+        s++;
+    }
+    if (canMove("down", walls)) {
+        directions.add("down");
+        s++;
+    }
+    if (canMove("left", walls)) {
+        directions.add("left");
+        s++;
+    }
+    if (canMove("right", walls)) {
+        directions.add("right");
+        s++;
+    }
+
+    Collections.shuffle(directions);
+
+    Random rn = new Random();
+    int i = Math.abs(rn.nextInt() % s);
+
+    move(directions.get(i));
+    oldMove=directions.get(i);
+
+}
 
 
 }

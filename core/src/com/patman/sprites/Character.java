@@ -16,10 +16,10 @@ public abstract class Character {
     public static int length=160;
     public static int width=160;
     protected int posX,posY;
-
+    public boolean isDead=false;
     protected Rectangle bound;
     protected int movement;
-    protected int health;
+    public int health;
     protected int Count=0;
     protected String oldMove;
     protected String olderMove;
@@ -38,28 +38,38 @@ public abstract class Character {
         this.oldMove="right";
         this.olderMove="right";
         bound=new Rectangle();
+        bound.set(posX,posY,width,length);
+        health=4;
+    }
+
+    public Rectangle getBound() {
+        return bound;
+    }
+
+    public void setBound(Rectangle bound) {
+        this.bound = bound;
     }
 
     public boolean canMove(String direction,ArrayList<Tile> walls){
         Rectangle testBound=new Rectangle();
         switch(direction){
             case "up":
-                testBound.set(posX,posY+movement,length,width);
+                testBound.set(posX,posY+movement, (float) (length-0.1*length), (float) (width-0.1*width));
                 break;
             case "down":
-                testBound.set(posX,posY-movement,length,width);
+                testBound.set(posX,posY-movement, (float) (length-0.1*length), (float) (width-0.1*width));
                 break;
             case "left":
-                testBound.set(posX-movement,posY,length,width);
+                testBound.set(posX-movement,posY, (float) (length-0.1*length), (float) (width-0.1*width));
                 break;
             case "right":
-                testBound.set(posX+movement,posY,length,width);
+                testBound.set(posX+movement,posY, (float) (length-0.1*length), (float) (width-0.1*width));
                 break;
 
         }
         for(Tile f:walls){
             if(testBound.overlaps(f.getBound())){
-                System.out.println(f.getPosX()+","+f.getPosY());
+
                 return  false;
             }
         }
@@ -196,5 +206,17 @@ protected void initFirst(ArrayList<Tile> walls){
 
 }
 
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+
+    public void dispose(){
+     this.img.dispose();
+
+ }
 
 }

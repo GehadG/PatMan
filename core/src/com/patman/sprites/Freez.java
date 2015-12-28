@@ -15,7 +15,7 @@ public class Freez extends Character {
     public Freez(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("freez1.png");
-
+        health=1;
         initTexture();
     }
 

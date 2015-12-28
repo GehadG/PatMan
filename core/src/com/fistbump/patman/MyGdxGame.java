@@ -20,7 +20,7 @@ public class MyGdxGame extends ApplicationAdapter  {
 		Wall.img = new Texture("Wall.png");
 		Path.img= new Texture("Path.png");
 		batch = new SpriteBatch();
-		Gdx.gl.glClearColor(0, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		StateManager.push(new GameState(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 	}
 

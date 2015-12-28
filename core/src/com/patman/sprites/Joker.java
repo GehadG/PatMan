@@ -15,6 +15,7 @@ public class Joker extends Character {
     public Joker(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("joker1.png");
+        health=4;
 
         initTexture();
     }

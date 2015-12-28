@@ -15,6 +15,7 @@ public class Bane extends Character {
     public Bane(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("Bane1.png");
+        health=5;
 
         initTexture();
     }

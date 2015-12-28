@@ -12,11 +12,24 @@ public class Batman extends Character {
     private static ArrayList<Texture> down=new ArrayList<>();
     private static ArrayList<Texture> left=new ArrayList<>();
     private static ArrayList<Texture> right=new ArrayList<>();
+    private int bulletCount=10;
     public Batman(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("b1.png");
-
+dir="right";
         initTexture();
+    }
+ private String dir;
+    public int getBulletCount() {
+        return bulletCount;
+    }
+
+    public String getDirection() {
+        return dir;
+    }
+
+    public void setBulletCount(int bulletCount) {
+        this.bulletCount = bulletCount;
     }
 
     public void move(String direction){
@@ -25,24 +38,25 @@ public class Batman extends Character {
                 posY=posY+movement;
                 if(frameCounterUp++%8==0)
                     img=up.get((frameCounterUp++)%up.size());
-
+               dir="up";
                 break;
             case "down":
                 posY=posY-movement;
                 if(frameCounterDown++%8==0)
                     img=down.get((frameCounterDown++)%down.size());
-
+                dir="down";
                 break;
             case "left":
                 posX=posX-movement;
                 if(frameCounterLeft++%5==0)
                     img=left.get((frameCounterLeft++)%left.size());
+                dir="left";
                 break;
             case "right":
                 posX=posX+movement;
                 if(frameCounterRight++%5==0)
                     img=right.get((frameCounterRight++)%right.size());
-
+                dir="right";
                 break;
         }
         updateBound();

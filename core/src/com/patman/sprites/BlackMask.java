@@ -15,6 +15,7 @@ public class BlackMask extends Character{
     public BlackMask(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("blackmask1.png");
+        health=3;
 
         initTexture();
     }

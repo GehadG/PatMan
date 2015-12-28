@@ -15,6 +15,7 @@ public class Harley extends Character {
     public Harley(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("harley1.png");
+        health=2;
 
         initTexture();
     }

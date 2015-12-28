@@ -9,12 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 public class Path extends Tile {
     public static Texture img;
 
+    @Override
+    public void dispose() {
+        this.img.dispose();
+    }
 
-
-    public Path(int x, int y) {
-        super(x, y);
-
-
+    public Path(int x, int y, int i, int j) {
+        super(x, y, i, j);
     }
 
     @Override

@@ -160,7 +160,7 @@ alfred=new ArrayList<>();
             batman.move(move);
 
 
-        batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), (float) (Character.length-0.1*Character.length),(float) (Character.length-0.1*Character.length) );
+        batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length,Character.length );
         ArrayList<Bullets> temp=new ArrayList<>();
         ArrayList<Character> tempCharacter=new ArrayList<>();
         for(Character e:enemy){

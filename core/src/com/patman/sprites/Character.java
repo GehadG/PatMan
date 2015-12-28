@@ -54,16 +54,16 @@ public abstract class Character {
         Rectangle testBound=new Rectangle();
         switch(direction){
             case "up":
-                testBound.set(posX,posY+movement, (float) (length-0.1*length), (float) (width-0.1*width));
+                testBound.set(posX,posY+movement,length,width);
                 break;
             case "down":
-                testBound.set(posX,posY-movement, (float) (length-0.1*length), (float) (width-0.1*width));
+                testBound.set(posX,posY-movement, length,width);
                 break;
             case "left":
-                testBound.set(posX-movement,posY, (float) (length-0.1*length), (float) (width-0.1*width));
+                testBound.set(posX-movement,posY,length,width);
                 break;
             case "right":
-                testBound.set(posX+movement,posY, (float) (length-0.1*length), (float) (width-0.1*width));
+                testBound.set(posX+movement,posY, length,width);
                 break;
 
         }

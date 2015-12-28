@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.patman.states.GameState;
+import com.patman.states.GameStates;
 import com.patman.states.StateManager;
 import com.patman.tiles.Path;
 import com.patman.tiles.Wall;
@@ -21,7 +21,7 @@ public class MyGdxGame extends ApplicationAdapter  {
 		Path.img= new Texture("Path.png");
 		batch = new SpriteBatch();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		StateManager.push(new GameState(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+		StateManager.push(new GameStates(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 	}
 
 	@Override

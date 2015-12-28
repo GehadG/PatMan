@@ -1,7 +1,6 @@
 package com.patman.states;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.patman.directionhandler.DirListener;
@@ -11,7 +10,6 @@ import com.patman.sprites.*;
 import com.patman.tiles.Path;
 import com.patman.tiles.Tile;
 import com.patman.sprites.Character;
-import com.patman.tiles.Wall;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,7 +17,7 @@ import java.util.Random;
 /**
  * Created by Gehad on 25/12/2015.
  */
-public class GameState extends State {
+public class GameStates extends States {
    private Tile[][]map;
    private TiledMaze maze ;
     private Batman batman;
@@ -31,7 +29,7 @@ public class GameState extends State {
     ArrayList<Bullets>bullet;
     DirListener controller;
     Bullets button;
-    public GameState(int Width,int Height) {
+    public GameStates(int Width, int Height) {
         maze = new TiledMaze(Width,Height);
         map = maze.getTileMap();
         bullet=new ArrayList<>();
@@ -262,7 +260,7 @@ alfred=new ArrayList<>();
             }
             else{
                 StateManager.pop();
-                StateManager.push(new GameState(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+                StateManager.push(new GameStates(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
             }
 
         }

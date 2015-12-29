@@ -17,7 +17,7 @@ public class Joker extends Character {
         this.img=new Texture("joker1.png");
         health=4;
 
-        initTexture();
+
     }
 
     public void move(String direction){
@@ -49,7 +49,7 @@ public class Joker extends Character {
         updateBound();
     }
 
-    private void initTexture(){
+    static {
         up.add(new Texture("joker9.png"));
         up.add(new Texture("joker10.png"));
         up.add(new Texture("joker12.png"));

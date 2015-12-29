@@ -17,7 +17,7 @@ public class Harley extends Character {
         this.img=new Texture("harley1.png");
         health=2;
 
-        initTexture();
+
     }
 
     public void move(String direction){
@@ -49,7 +49,7 @@ public class Harley extends Character {
         updateBound();
     }
 
-    private void initTexture(){
+    static {
         up.add(new Texture("harley9.png"));
         up.add(new Texture("harley10.png"));
         up.add(new Texture("harley12.png"));

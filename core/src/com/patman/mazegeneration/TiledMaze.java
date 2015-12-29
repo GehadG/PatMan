@@ -36,10 +36,11 @@ public class TiledMaze {
 
     public TiledMaze(int width,int height) {
 
+
         int maxH=5;
-        Tile.TILE_HEIGHT = height/((maxH*2)+1);
+        Tile.TILE_HEIGHT = (int) (height/((maxH*2)+1));
         height=height-Tile.TILE_HEIGHT;
-        Tile.TILE_HEIGHT = height/((maxH*2)+1);
+        Tile.TILE_HEIGHT = (int) (height/((maxH*2)+1));
         Tile.TILE_WIDTH = Tile.TILE_HEIGHT;
         Character.length= (int) (Tile.TILE_HEIGHT);
         Character.width=(int) (Tile.TILE_HEIGHT);
@@ -85,8 +86,8 @@ for(int i=0;i<print[0].length;i++)
             for(int j=0;j<print[0].length;j++)
             {
 
-                Wall wall = new Wall(i*Tile.TILE_WIDTH+xBias,j*Tile.TILE_HEIGHT+yBias,i,j);
-                Path path = new Path(i*Tile.TILE_WIDTH+xBias,j*Tile.TILE_HEIGHT+yBias,i,j);
+                Wall wall = new Wall(i*Tile.TILE_WIDTH+xBias,j*Tile.TILE_HEIGHT-yBias,i,j);
+                Path path = new Path(i*Tile.TILE_WIDTH+xBias,j*Tile.TILE_HEIGHT-yBias,i,j);
                 if(j==0 || j==print[0].length-1 || i==0 || i==print.length-1){
                     wall.isBreakable=false;
                 }

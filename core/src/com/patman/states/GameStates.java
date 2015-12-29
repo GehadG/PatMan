@@ -1,7 +1,13 @@
 package com.patman.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.patman.directionhandler.DirListener;
 import com.patman.directionhandler.DirectionListener;
@@ -14,14 +20,22 @@ import com.patman.sprites.Character;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.xml.soap.Text;
+
 /**
  * Created by Gehad on 25/12/2015.
  */
 public class GameStates extends States {
    private Tile[][]map;
+    Preferences prefs = Gdx.app.getPreferences("settings");
    private TiledMaze maze ;
+    private Texture tab;
     private Batman batman;
+    private Texture but;
     private String nextMove;
+    private BitmapFont font;
+    private float timePassed;
+    private boolean life;
     private String move;
     private  int score=0;
     ArrayList<Character> enemy;
@@ -32,11 +46,19 @@ public class GameStates extends States {
     public GameStates(int Width, int Height) {
         maze = new TiledMaze(Width,Height);
         map = maze.getTileMap();
+        font=new BitmapFont();
         bullet=new ArrayList<>();
+        but=new Texture("shoot.png");
 alfred=new ArrayList<>();
+        timePassed=0;
+        life=false;
         nextMove="left";
+        tab=new Texture("tab.png");
         move="right";
-        button=new Bullets(0,0,move);
+        font.setColor(Color.BLACK);
+       loadFont();
+
+
         initControl();
         Gdx.input.setInputProcessor(controller);
         Random rn = new Random();
@@ -44,7 +66,7 @@ alfred=new ArrayList<>();
         batman=new Batman(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
         enemy=new ArrayList<>();
 
-       int  i2 =Math.abs(rn.nextInt() % 4) ;
+       int  i2 =1+Math.abs(rn.nextInt() % 3) ;
 
         for(int j=0;j<i2;j++){
            int k =1+Math.abs(rn.nextInt() % 5) ;
@@ -78,6 +100,7 @@ alfred=new ArrayList<>();
             i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
             alfred.add(new Alfred(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
         }
+
 
 
     }
@@ -115,37 +138,55 @@ alfred=new ArrayList<>();
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        update();
-        batch.begin();
-
-
+    public void input() {
         if(Gdx.input.justTouched()){
 
             int gx = Gdx.input.getX();
             int gy = Gdx.input.getY();
             Rectangle rect = new Rectangle();
-            rect.set(0, Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            Rectangle rect2=new Rectangle();
 
-          if(rect.contains(gx, gy) && batman.getBulletCount()>0) {
-              Bullets temp=null;
-              boolean flag=true;
-              if(batman.getDirection().equals("right"))
-                  temp=new Bullets(batman.getPosX() + Character.length, batman.getPosY(), move);
-              if(batman.getDirection().equals("up"))
-                  temp=new Bullets(batman.getPosX(), batman.getPosY()+Character.length, move);
-              if(batman.getDirection().equals("left"))
-                  temp=new Bullets(batman.getPosX() - Character.length, batman.getPosY(), move);
-              if(batman.getDirection().equals("down"))
-                  temp=new Bullets(batman.getPosX() , batman.getPosY()-Character.length, move);
+            rect2.set((float) (0.8*Gdx.graphics.getWidth()),0, (float) (0.2*Gdx.graphics.getWidth()),Tile.TILE_HEIGHT);
 
-              if(flag){
-                  bullet.add(temp);
-                  batman.setBulletCount(batman.getBulletCount()-1);
-              }
-              
-          }
-      }
+            if(prefs.getString("hands").equals("true"))
+                rect.set((float) (0.1*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            else
+                rect.set((float) (0.9*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            if(rect.contains(gx, gy) && batman.getBulletCount()>0) {
+                Bullets temp=null;
+                boolean flag=true;
+                if(batman.getDirection().equals("right"))
+                    temp=new Bullets(batman.getPosX() + Character.length, batman.getPosY(), move);
+                if(batman.getDirection().equals("up"))
+                    temp=new Bullets(batman.getPosX(), batman.getPosY()+Character.length, move);
+                if(batman.getDirection().equals("left"))
+                    temp=new Bullets(batman.getPosX() - Character.length, batman.getPosY(), move);
+                if(batman.getDirection().equals("down"))
+                    temp=new Bullets(batman.getPosX() , batman.getPosY()-Character.length, move);
+
+                if(flag){
+                    bullet.add(temp);
+                    batman.setBulletCount(batman.getBulletCount()-1);
+                }
+
+            }
+            if(rect2.contains(gx,gy)){
+                StateManager.push(new PauseState());
+                ((PauseState) StateManager.peek()).game=this;
+
+            }
+
+        }
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        update(Gdx.graphics.getDeltaTime(),batch);
+        input();
+        batch.begin();
+
+
+
         for(int i=0;i<map.length;i++)
         {
             for(int j =0;j<map[0].length;j++)
@@ -160,13 +201,11 @@ alfred=new ArrayList<>();
             batman.move(move);
 
 
-        batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length,Character.length );
-        ArrayList<Bullets> temp=new ArrayList<>();
-        ArrayList<Character> tempCharacter=new ArrayList<>();
+
         for(Character e:enemy){
             if(batman.getBound().overlaps(e.getBound())){
                 batman.isDead=true;
-                batman.health--;
+
             }
         }
 
@@ -185,9 +224,17 @@ alfred=new ArrayList<>();
                   float x=a.getPosX()+a.width/2;
                   float y=a.getPosY()+a.length/2;
                   if(batman.getBound().contains(x,y)){
-                      a.isDead=true;
-                      score+=10;
-                      batman.setBulletCount(batman.getBulletCount()+1);
+                      if(!(a instanceof BatLife)) {
+                          a.isDead = true;
+                          score += 10;
+                          batman.setBulletCount(batman.getBulletCount() + 1);
+                      }
+                      else {
+                          timePassed=0;
+                          a.isDead=true;
+                          batman.health++;
+                          life=false;
+                      }
 
                   }
 
@@ -206,9 +253,14 @@ alfred=new ArrayList<>();
             }
             if (e.health<=0){
                e.isDead=true;
+                score+=100;
             }
         }
+        for(Character a:alfred) {
+            if(!a.isDead)
+                batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
 
+        }
         for(Character e:enemy){
             if(!e.isDead)
             batch.draw(e.getTexture(),e.getPosX(),e.getPosY(),Character.length,Character.length);
@@ -219,13 +271,18 @@ alfred=new ArrayList<>();
             batch.draw(b.getTexture(), b.getPosX(), b.getPosY(), Character.length, Character.length);
 
         }
-        for(Character a:alfred) {
-            if(!a.isDead)
-                batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
-
-        }
-
-        batch.draw(button.getTexture(),button.getPosX(),button.getPosY(),2*Character.length,2*Character.length);
+        batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length,Character.length );
+        batch.setColor(1,1,1,0.7f);
+        if(prefs.getString("hands").equals("true"))
+           batch.draw(but
+                   , (float) (0.1*Gdx.graphics.getWidth()),0, 2 * Character.length, 2 * Character.length);
+        else
+       batch.draw(but, (float) (0.9* Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
+        batch.setColor(1,1,1,1f);
+       batch.draw(tab,0,Gdx.graphics.getHeight()-Tile.TILE_HEIGHT,Gdx.graphics.getWidth(),Tile.TILE_HEIGHT);
+       font.draw(batch,""+score,(float)(0.1314*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
+        font.draw(batch,"x"+batman.getBulletCount(),(float)(0.407*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
+        font.draw(batch,"x"+batman.health,(float)(0.627*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
         batch.end();
 
 
@@ -242,15 +299,29 @@ alfred=new ArrayList<>();
             e.dispose();
         for(Character a:alfred)
             a.dispose();
-
-
+tab.dispose();
+        but.dispose();
+font.dispose();
     }
-    public void update(){
+    public void update(float deltaTime,SpriteBatch batch){
+        timePassed+=deltaTime;
+
         ArrayList<Bullets> tempB =new ArrayList<>();
         ArrayList<Character> tempE=new ArrayList<>();
         ArrayList<Character> tempAlfred=new ArrayList<>();
         ArrayList<Tile> tempWall=new ArrayList<>();
+        if(timePassed>20 && !life){
+            life=true;
+            Random rn = new Random();
+            int i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
+            tempAlfred.add(new BatLife(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+
+
+
+        }
+
         if(batman.isDead){
+            batman.health--;
             if(batman.health>0)
             {   batman.isDead=false;
                 Random rn = new Random();
@@ -261,7 +332,7 @@ alfred=new ArrayList<>();
             }
             else{
                 StateManager.pop();
-                StateManager.push(new GameStates(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+            //    StateManager.push(new GameStates(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
             }
 
         }
@@ -285,14 +356,20 @@ alfred=new ArrayList<>();
         for(Character e:enemy){
             if(!e.isDead)
                 tempE.add(e);
+
         }
         for(Bullets b:bullet){
             if(!b.isDead)
                 tempB.add(b);
         }
         for(Character a:alfred){
-            if(!a.isDead)
+            if(!a.isDead )
                 tempAlfred.add(a);
+            if(a instanceof BatLife && timePassed>35){
+                tempAlfred.remove(a);
+                life=false;
+                timePassed=0;
+            }
         }
         maze.getWalls().clear();
         maze.setWalls(tempWall);
@@ -302,5 +379,58 @@ alfred=new ArrayList<>();
         enemy.addAll(tempE);
         alfred.clear();
         alfred.addAll(tempAlfred);
+    }
+    public void pause(SpriteBatch batch){
+        batch.begin();
+        for(int i=0;i<map.length;i++)
+        {
+            for(int j =0;j<map[0].length;j++)
+                batch.draw(map[i][j].getTexture(), map[i][j].getPosX(), map[i][j].getPosY(),Tile.TILE_HEIGHT,Tile.TILE_HEIGHT);
+        }
+        for(Character e:enemy){
+            if(!e.isDead)
+                batch.draw(e.getTexture(),e.getPosX(),e.getPosY(),Character.length,Character.length);
+
+        }
+        for(Bullets b:bullet) {
+            if(!b.isDead)
+                batch.draw(b.getTexture(), b.getPosX(), b.getPosY(), Character.length, Character.length);
+
+        }
+        for(Character a:alfred) {
+            if(!a.isDead)
+                batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
+
+        }
+        if(prefs.getString("hands").equals("true"))
+            batch.draw(but
+                    , (float) (0.1*Gdx.graphics.getWidth()),0, 2 * Character.length, 2 * Character.length);
+        else
+            batch.draw(but, (float) (0.9* Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
+        batch.draw(tab,0,Gdx.graphics.getHeight()-Tile.TILE_HEIGHT,Gdx.graphics.getWidth(),Tile.TILE_HEIGHT);
+        batch.end();
+    }
+
+    public static float SCALE;
+    public static final int VIRTUAL_WIDTH = 320;
+
+
+    public void loadFont(){
+
+        SCALE = 1.0f *( Gdx.graphics.getWidth() )/ VIRTUAL_WIDTH ;
+
+        if (SCALE<1)
+            SCALE = 1;
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JennaSue.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = (int) (75*SCALE);
+        font = generator.generateFont(parameter);
+font.setColor(Color.BLACK);
+
+        font.getData().setScale((float) (1.0/SCALE));
+
+        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        generator.dispose();
     }
 }

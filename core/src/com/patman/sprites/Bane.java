@@ -17,7 +17,7 @@ public class Bane extends Character {
         this.img=new Texture("Bane1.png");
         health=5;
 
-        initTexture();
+
     }
 
     public void move(String direction){
@@ -49,7 +49,8 @@ public class Bane extends Character {
         updateBound();
     }
 
-    private void initTexture(){
+static
+{
         up.add(new Texture("Bane9.png"));
         up.add(new Texture("Bane10.png"));
         up.add(new Texture("Bane12.png"));

@@ -20,4 +20,8 @@ private static Stack<States> states=new Stack<>();
         return states.peek();
 
     }
+    public static boolean isEmpty(){
+        return states.empty();
+    }
+
 }

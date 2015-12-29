@@ -271,6 +271,7 @@ alfred=new ArrayList<>();
             batch.draw(b.getTexture(), b.getPosX(), b.getPosY(), Character.length, Character.length);
 
         }
+
         batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length,Character.length );
         batch.setColor(1,1,1,0.7f);
         if(prefs.getString("hands").equals("true"))

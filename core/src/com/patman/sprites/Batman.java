@@ -16,7 +16,7 @@ public class Batman extends Character {
     public Batman(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("b1.png");
-dir="right";
+        dir="right";
         initTexture();
     }
  private String dir;

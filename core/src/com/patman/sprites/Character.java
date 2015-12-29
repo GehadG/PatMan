@@ -54,16 +54,16 @@ public abstract class Character {
         Rectangle testBound=new Rectangle();
         switch(direction){
             case "up":
-                testBound.set(posX,posY+movement,length,width);
+                testBound.set(posX,posY+movement, (float) (length-(0.05*length)), (float) (width-(0.05*width)));
                 break;
             case "down":
-                testBound.set(posX,posY-movement, length,width);
+                testBound.set(posX,posY-movement,  (float) (length-(0.05*length)),(float) (width-(0.05*width)));
                 break;
             case "left":
-                testBound.set(posX-movement,posY,length,width);
+                testBound.set(posX-movement,posY, (float) (length-(0.05*length)),(float) (width-(0.05*width)));
                 break;
             case "right":
-                testBound.set(posX+movement,posY, length,width);
+                testBound.set(posX+movement,posY,  (float) (length-(0.05*length)),(float) (width-(0.05*width)));
                 break;
 
         }
@@ -90,7 +90,7 @@ public abstract class Character {
     }
 
     public void randomMove(ArrayList<Tile>walls){
-if(Count==0)
+    if(Count==0)
     initFirst(walls);
         Count++;
 

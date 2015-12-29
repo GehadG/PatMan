@@ -212,6 +212,7 @@ alfred=new ArrayList<>();
         for(Character e:enemy){
             if(!e.isDead)
             batch.draw(e.getTexture(),e.getPosX(),e.getPosY(),Character.length,Character.length);
+            e.randomMove(maze.getWalls());
         }
         for(Bullets b:bullet) {
             if(!b.isDead)

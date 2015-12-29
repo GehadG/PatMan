@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public abstract class States {
 
-
+    public abstract void input();
     public abstract void render(SpriteBatch batch);
     public abstract void dispose();
 }

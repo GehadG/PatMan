@@ -16,7 +16,7 @@ public class Freez extends Character {
         super(posX, posY);
         this.img=new Texture("freez1.png");
         health=1;
-        initTexture();
+
     }
 
     public void move(String direction){
@@ -48,7 +48,7 @@ public class Freez extends Character {
         updateBound();
     }
 
-    private void initTexture(){
+ static {
         up.add(new Texture("freez9.png"));
         up.add(new Texture("freez10.png"));
         up.add(new Texture("freez12.png"));

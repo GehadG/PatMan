@@ -17,7 +17,6 @@ public class BlackMask extends Character{
         this.img=new Texture("blackmask1.png");
         health=3;
 
-        initTexture();
     }
 
     public void move(String direction){
@@ -49,7 +48,7 @@ public class BlackMask extends Character{
         updateBound();
     }
 
-    private void initTexture(){
+static {
         up.add(new Texture("blackmask9.png"));
         up.add(new Texture("blackmask10.png"));
         up.add(new Texture("blackmask12.png"));

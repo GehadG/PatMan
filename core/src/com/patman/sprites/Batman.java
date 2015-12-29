@@ -17,7 +17,6 @@ public class Batman extends Character {
         super(posX, posY);
         this.img=new Texture("b1.png");
         dir="right";
-        initTexture();
     }
  private String dir;
     public int getBulletCount() {
@@ -62,7 +61,7 @@ public class Batman extends Character {
         updateBound();
     }
 
-    private void initTexture(){
+  static {
         up.add(new Texture("b9.png"));
         up.add(new Texture("b10.png"));
         up.add(new Texture("b12.png"));

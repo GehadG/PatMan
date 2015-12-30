@@ -1,6 +1,7 @@
 package com.patman.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,8 @@ public class PauseState extends States {
     Texture play;
     Texture menu;
     Texture bg;
+    private Music background;
+
     public PauseState() {
         bg= new Texture("background.png");
         sprite=new Sprite(bg);
@@ -23,6 +26,12 @@ public class PauseState extends States {
         sprite.setAlpha(0.8f);
         play=new Texture("resume.png");
         menu=new Texture("backmenu.png");
+        background = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
+        background.setLooping(true);
+        background.setVolume(0.5f);
+        background.play();
+
+
     }
 
     @Override
@@ -38,6 +47,7 @@ public class PauseState extends States {
            StateManager.pop();
                 StateManager.pop();
                 StateManager.push(new MenuState());
+
 
        }
             if(rect2.contains(gx,gy)){
@@ -60,6 +70,7 @@ public class PauseState extends States {
 
     @Override
     public void dispose() {
+        background.dispose();
            play.dispose();
         menu.dispose();
         bg.dispose();

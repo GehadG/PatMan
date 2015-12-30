@@ -2,7 +2,10 @@ package com.fistbump.patman;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,8 +17,7 @@ import com.patman.tiles.Tile;
 import com.patman.tiles.Wall;
 
 
-
-public class MyGdxGame extends ApplicationAdapter  {
+public class MyGdxGame extends ApplicationAdapter{
 	SpriteBatch batch;
 
 	@Override
@@ -31,6 +33,7 @@ public class MyGdxGame extends ApplicationAdapter  {
 		batch = new SpriteBatch();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		StateManager.push(new MenuState());
+
 
 	}
 
@@ -50,9 +53,4 @@ if(!StateManager.isEmpty())
 
 
 	}
-
-
-
-
-
 }

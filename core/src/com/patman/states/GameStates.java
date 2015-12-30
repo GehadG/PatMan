@@ -3,6 +3,8 @@ package com.patman.states;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -38,6 +40,12 @@ public class GameStates extends States {
     private boolean life;
     private String move;
     private  int score=0;
+    public Music playing;
+    private Sound coin;
+    private Sound slice;
+    private Sound bonus;
+    private Sound died;
+    public static int flagg=0;
     ArrayList<Character> enemy;
     ArrayList<Character> alfred;
     ArrayList<Bullets>bullet;
@@ -101,6 +109,14 @@ alfred=new ArrayList<>();
             alfred.add(new Alfred(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
         }
 
+        playing = Gdx.audio.newMusic(Gdx.files.internal("playingtheme.mp3"));
+        coin = Gdx.audio.newSound(Gdx.files.internal("coincollected.wav"));
+        slice = Gdx.audio.newSound(Gdx.files.internal("slice.wav"));
+        bonus = Gdx.audio.newSound(Gdx.files.internal("bonus.wav"));
+        bonus = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
+        playing.setLooping(true);
+        playing.setVolume(0.2f);
+        playing.play();
 
 
     }
@@ -149,7 +165,8 @@ alfred=new ArrayList<>();
             rect2.set((float) (0.8*Gdx.graphics.getWidth()),0, (float) (0.2*Gdx.graphics.getWidth()),Tile.TILE_HEIGHT);
 
             if(prefs.getString("hands").equals("true"))
-                rect.set((float) (0.1*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            rect.set((float) (0.1*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+
             else
                 rect.set((float) (0.9*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
             if(rect.contains(gx, gy) && batman.getBulletCount()>0) {
@@ -166,13 +183,15 @@ alfred=new ArrayList<>();
 
                 if(flag){
                     bullet.add(temp);
-                    batman.setBulletCount(batman.getBulletCount()-1);
+                    batman.setBulletCount(batman.getBulletCount() - 1);
+                    slice.play(0.5f);
                 }
 
             }
             if(rect2.contains(gx,gy)){
                 StateManager.push(new PauseState());
                 ((PauseState) StateManager.peek()).game=this;
+                playing.pause();
 
             }
 
@@ -220,7 +239,8 @@ alfred=new ArrayList<>();
                 b.move(b.getDirection());
             }
         }
-              for(Character a:alfred){
+              for(Character a:alfred){//bumping into coins
+
                   float x=a.getPosX()+a.width/2;
                   float y=a.getPosY()+a.length/2;
                   if(batman.getBound().contains(x,y)){
@@ -228,11 +248,13 @@ alfred=new ArrayList<>();
                           a.isDead = true;
                           score += 10;
                           batman.setBulletCount(batman.getBulletCount() + 1);
+                          coin.play(0.5f);
                       }
                       else {
                           timePassed=0;
                           a.isDead=true;
                           batman.health++;
+                          bonus.play(0.5f);
                           life=false;
                       }
 
@@ -245,6 +267,7 @@ alfred=new ArrayList<>();
                 System.out.println(e.health);
                 if(b.getBound().overlaps(e.getBound())){
                     e.health--;
+
                    b.isDead=true;
          }
 
@@ -254,6 +277,7 @@ alfred=new ArrayList<>();
             if (e.health<=0){
                e.isDead=true;
                 score+=100;
+
             }
         }
         for(Character a:alfred) {
@@ -261,10 +285,12 @@ alfred=new ArrayList<>();
                 batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
 
         }
-        for(Character e:enemy){
+        for(Character e:enemy){//random move
             if(!e.isDead)
             batch.draw(e.getTexture(),e.getPosX(),e.getPosY(),Character.length,Character.length);
+
             e.randomMove(maze.getWalls());
+
         }
         for(Bullets b:bullet) {
             if(!b.isDead)
@@ -295,6 +321,11 @@ alfred=new ArrayList<>();
 
     @Override
     public void dispose() {
+        died.dispose();
+        bonus.dispose();
+        slice.dispose();
+        playing.dispose();
+        coin.dispose();
         batman.dispose();
         for(Character e:enemy)
             e.dispose();
@@ -416,20 +447,20 @@ font.dispose();
     public static final int VIRTUAL_WIDTH = 320;
 
 
-    public void loadFont(){
+    public void loadFont() {
 
-        SCALE = 1.0f *( Gdx.graphics.getWidth() )/ VIRTUAL_WIDTH ;
+        SCALE = 1.0f * (Gdx.graphics.getWidth()) / VIRTUAL_WIDTH;
 
-        if (SCALE<1)
+        if (SCALE < 1)
             SCALE = 1;
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JennaSue.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (75*SCALE);
+        parameter.size = (int) (75 * SCALE);
         font = generator.generateFont(parameter);
-font.setColor(Color.BLACK);
+        font.setColor(Color.BLACK);
 
-        font.getData().setScale((float) (1.0/SCALE));
+        font.getData().setScale((float) (1.0 / SCALE));
 
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         generator.dispose();

@@ -24,6 +24,7 @@ public class Settings extends States {
 
 
 
+
     public Settings() {
         on=new Texture("on.png");
         off= new Texture("off.png");

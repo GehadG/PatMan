@@ -2,6 +2,8 @@ package com.patman.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +19,8 @@ public class MenuState extends States {
     private Texture settings;
     private Texture quit;
     private Texture bg;
+    private Music background;
+
     public MenuState() {
         bg=new Texture("menu.jpg");
         sprite=new Sprite(bg);
@@ -24,7 +28,10 @@ public class MenuState extends States {
         start=new Texture("start.png");
         settings=new Texture("settings.png");
         quit=new Texture("exit.png");
-
+        background = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
+        background.setLooping(true);
+        background.setVolume(0.5f);
+        background.play();
     }
     @Override
     public void input() {
@@ -77,8 +84,7 @@ public class MenuState extends States {
         start.dispose();
         quit.dispose();
         bg.dispose();
-
-
-
+        background.dispose();
     }
+
 }

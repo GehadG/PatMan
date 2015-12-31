@@ -95,8 +95,25 @@ public abstract class Character {
     if(Count==0)
     initFirst(walls);
         Count++;
+        Random rn=new Random();
+        int x = rn.nextInt(3);
+        System.out.println(x);
         switch (oldMove){
-            case"up":{ if (!canMove("up",walls)){
+            case"up":{
+                if(canMove("up",walls)){
+                    if (x==0){
+                        if (canMove("right",walls))
+                            oldMove="right";
+                    }
+                    else if (x==1)
+                        if (canMove("left",walls))
+                            oldMove="left";
+                    else if (x==2){
+                            if (canMove("up",walls))
+                                oldMove="up";
+                        }
+                }
+                if (!canMove("up",walls)){
                 if (canMove("right",walls)){
                     oldMove = "right";
                 }
@@ -106,7 +123,21 @@ public abstract class Character {
                 else if (canMove("down",walls))
                     oldMove="down";
             }break;}
-            case"down":{ if (!canMove("down",walls)){
+
+            case"down":{
+                if(canMove("down",walls)){
+                    if (x==0){
+                        if (canMove("right",walls))
+                            oldMove="right";
+                    }
+                    else if (x==1)
+                        if (canMove("left",walls))
+                            oldMove="left";
+                        else if (x==2){
+                            if (canMove("down",walls))
+                                oldMove="down";
+                        }
+                }if (!canMove("down",walls)){
                 if (canMove("right",walls)){
                     oldMove = "right";
                 }
@@ -116,7 +147,20 @@ public abstract class Character {
                 else if (canMove("up",walls))
                     oldMove="up";
             }break;}
-            case"right":{ if (!canMove("right",walls)){
+            case"right":{
+                if(canMove("right",walls)){
+                    if (x==0){
+                        if (canMove("up",walls))
+                            oldMove="up";
+                    }
+                    else if (x==1)
+                        if (canMove("down",walls))
+                            oldMove="down";
+                        else if (x==2){
+                            if (canMove("right",walls))
+                                oldMove="right";
+                        }
+                }if (!canMove("right",walls)){
                 if (canMove("up",walls)){
                     oldMove = "up";
                 }
@@ -126,7 +170,20 @@ public abstract class Character {
                 else if (canMove("left",walls))
                     oldMove="left";
             }break;}
-            case"left":{ if (!canMove("left",walls)){
+            case"left":{
+                if(canMove("left",walls)){
+                    if (x==0){
+                        if (canMove("up",walls))
+                            oldMove="up";
+                    }
+                    else if (x==1)
+                        if (canMove("down",walls))
+                            oldMove="down";
+                        else if (x==2){
+                            if (canMove("left",walls))
+                                oldMove="left";
+                        }}
+                if (!canMove("left",walls)){
                 if (canMove("up",walls)){
                     oldMove = "up";
                 }

@@ -95,8 +95,54 @@ public abstract class Character {
     if(Count==0)
     initFirst(walls);
         Count++;
+        switch (oldMove){
+            case"up":{ if (!canMove("up",walls)){
+                if (canMove("right",walls)){
+                    oldMove = "right";
+                }
+                else if (canMove("left",walls)){
+                    oldMove = "left";
+                }
+                else if (canMove("down",walls))
+                    oldMove="down";
+            }break;}
+            case"down":{ if (!canMove("down",walls)){
+                if (canMove("right",walls)){
+                    oldMove = "right";
+                }
+                else if (canMove("left",walls)){
+                    oldMove = "left";
+                }
+                else if (canMove("up",walls))
+                    oldMove="up";
+            }break;}
+            case"right":{ if (!canMove("right",walls)){
+                if (canMove("up",walls)){
+                    oldMove = "up";
+                }
+                else if (canMove("down",walls)){
+                    oldMove = "down";
+                }
+                else if (canMove("left",walls))
+                    oldMove="left";
+            }break;}
+            case"left":{ if (!canMove("left",walls)){
+                if (canMove("up",walls)){
+                    oldMove = "up";
+                }
+                else if (canMove("down",walls)){
+                    oldMove = "down";
+                }
+                else if (canMove("right",walls))
+                    oldMove="right";
+            }break;}
 
-        if(compDirection(oldMove,walls)){
+
+        }
+        move(oldMove);
+
+
+       /* if(compDirection(oldMove,walls)){
 
 
             oldMove=getCom(oldMove,walls);
@@ -110,7 +156,7 @@ public abstract class Character {
 
         }
 move(oldMove);
-
+*/
     }
     public  Texture getTexture(){
         return img;

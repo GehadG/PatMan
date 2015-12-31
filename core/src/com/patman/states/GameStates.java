@@ -113,10 +113,11 @@ alfred=new ArrayList<>();
         coin = Gdx.audio.newSound(Gdx.files.internal("coincollected.wav"));
         slice = Gdx.audio.newSound(Gdx.files.internal("slice.wav"));
         bonus = Gdx.audio.newSound(Gdx.files.internal("bonus.wav"));
-        bonus = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
+        died = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
         playing.setLooping(true);
         playing.setVolume(0.2f);
         playing.play();
+
 
 
     }
@@ -167,8 +168,11 @@ alfred=new ArrayList<>();
             if(prefs.getString("hands").equals("true"))
             rect.set((float) (0.1*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
 
-            else
-                rect.set((float) (0.9*Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            else {
+                rect.set((float) (0.9 * Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - 2 * button.length, 2 * button.length, 2 * button.width);
+            }
+
+
             if(rect.contains(gx, gy) && batman.getBulletCount()>0) {
                 Bullets temp=null;
                 boolean flag=true;
@@ -191,7 +195,7 @@ alfred=new ArrayList<>();
             if(rect2.contains(gx,gy)){
                 StateManager.push(new PauseState());
                 ((PauseState) StateManager.peek()).game=this;
-                playing.pause();
+                playing.stop();
 
             }
 
@@ -277,6 +281,7 @@ alfred=new ArrayList<>();
             if (e.health<=0){
                e.isDead=true;
                 score+=100;
+                died.play();
 
             }
         }

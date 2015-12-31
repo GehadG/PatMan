@@ -195,7 +195,7 @@ alfred=new ArrayList<>();
             if(rect2.contains(gx,gy)){
                 StateManager.push(new PauseState());
                 ((PauseState) StateManager.peek()).game=this;
-                playing.stop();
+
 
             }
 

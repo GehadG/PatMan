@@ -17,8 +17,6 @@ public class PauseState extends States {
     Texture play;
     Texture menu;
     Texture bg;
-    private Music background;
-    private Music playing = Gdx.audio.newMusic(Gdx.files.internal("playingtheme.mp3"));
 
     public PauseState() {
         bg= new Texture("background.png");
@@ -27,13 +25,9 @@ public class PauseState extends States {
         sprite.setAlpha(0.8f);
         play=new Texture("resume.png");
         menu=new Texture("backmenu.png");
-        background = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
 
-        background.setLooping(true);
-        background.setVolume(0.5f);
-        background.play();
-        playing.setLooping(true);
-        playing.setVolume(0.3f);
+
+
 
 
     }
@@ -56,8 +50,6 @@ public class PauseState extends States {
        }
             if(rect2.contains(gx,gy)){
                 StateManager.pop();
-                background.stop();
-                playing.play();
             }
 
         }
@@ -76,8 +68,6 @@ public class PauseState extends States {
 
     @Override
     public void dispose() {
-        background.dispose();
-           playing.dispose();
         menu.dispose();
         bg.dispose();
 

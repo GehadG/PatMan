@@ -29,6 +29,11 @@ public abstract class Character {
     protected int frameCounterRight=0;
     protected int frameCounterUp=0;
     protected int frameCounterDown=0;
+    protected int type;
+
+    public int getType() {
+        return type;
+    }
 
     protected Texture img;
 
@@ -97,7 +102,6 @@ public abstract class Character {
         Count++;
         Random rn=new Random();
         int x = rn.nextInt(3);
-        System.out.println(x);
         switch (oldMove){
             case"up":{
                 if(canMove("up",walls)){

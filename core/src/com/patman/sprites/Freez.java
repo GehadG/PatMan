@@ -16,7 +16,7 @@ public class Freez extends Character {
         super(posX, posY);
         this.img=new Texture("freez1.png");
         health=1;
-
+type=3;
     }
 
     public void move(String direction){

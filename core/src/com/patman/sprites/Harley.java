@@ -12,11 +12,12 @@ public class Harley extends Character {
     private static ArrayList<Texture> down=new ArrayList<>();
     private static ArrayList<Texture> left=new ArrayList<>();
     private static ArrayList<Texture> right=new ArrayList<>();
+
     public Harley(int posX, int posY) {
         super(posX, posY);
         this.img=new Texture("harley1.png");
         health=2;
-
+type=1;
 
     }
 

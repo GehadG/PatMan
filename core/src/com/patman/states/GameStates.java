@@ -30,22 +30,19 @@ import javax.xml.soap.Text;
 public class GameStates extends States {
    private Tile[][]map;
     Preferences prefs = Gdx.app.getPreferences("settings");
+    private String sound;
    private TiledMaze maze ;
+    private float clocker;
     private Texture tab;
     private Batman batman;
     private Texture but;
     private String nextMove;
-    private BitmapFont font;
+    private  BitmapFont font=new BitmapFont();
     private float timePassed;
     private boolean life;
     private String move;
     private  int score=0;
-    public Music playing;
-    private Sound coin;
-    private Sound slice;
-    private Sound bonus;
-    private Sound died;
-    public static int flagg=0;
+
     ArrayList<Character> enemy;
     ArrayList<Character> alfred;
     ArrayList<Bullets>bullet;
@@ -54,20 +51,19 @@ public class GameStates extends States {
     public GameStates(int Width, int Height) {
         maze = new TiledMaze(Width,Height);
         map = maze.getTileMap();
-        font=new BitmapFont();
         bullet=new ArrayList<>();
+        sound=prefs.getString("musics");
+        clocker=0;
         but=new Texture("shoot.png");
-alfred=new ArrayList<>();
+        alfred=new ArrayList<>();
         timePassed=0;
         life=false;
+        initControl();
         nextMove="left";
         tab=new Texture("tab.png");
         move="right";
         font.setColor(Color.BLACK);
-       loadFont();
-
-
-        initControl();
+        font.getData().scale(Gdx.graphics.getDensity());
         Gdx.input.setInputProcessor(controller);
         Random rn = new Random();
         int i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
@@ -78,25 +74,8 @@ alfred=new ArrayList<>();
 
         for(int j=0;j<i2;j++){
            int k =1+Math.abs(rn.nextInt() % 5) ;
+           addMonster(k);
 
-            i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
-            switch (k){
-                case 1:
-                    enemy.add(new Harley(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
-                    break;
-                case 2:
-                    enemy.add(new Joker(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
-                    break;
-                case 3:
-                    enemy.add(new Freez(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
-                    break;
-                case 4:
-                    enemy.add(new Bane(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
-                    break;
-                case 5:
-                    enemy.add(new BlackMask(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
-                    break;
-            }
 
 
             }
@@ -109,14 +88,10 @@ alfred=new ArrayList<>();
             alfred.add(new Alfred(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
         }
 
-        playing = Gdx.audio.newMusic(Gdx.files.internal("playingtheme.mp3"));
-        coin = Gdx.audio.newSound(Gdx.files.internal("coincollected.wav"));
-        slice = Gdx.audio.newSound(Gdx.files.internal("slice.wav"));
-        bonus = Gdx.audio.newSound(Gdx.files.internal("bonus.wav"));
-        died = Gdx.audio.newSound(Gdx.files.internal("die.wav"));
-        playing.setLooping(true);
-        playing.setVolume(0.2f);
-        playing.play();
+
+        MusicHandler.playing.setLooping(true);
+        MusicHandler.playing.setVolume(0.2f);
+
 
 
 
@@ -188,7 +163,8 @@ alfred=new ArrayList<>();
                 if(flag){
                     bullet.add(temp);
                     batman.setBulletCount(batman.getBulletCount() - 1);
-                    slice.play(0.5f);
+                    if(sound.equals("true"))
+                    MusicHandler.slice.play(0.5f);
                 }
 
             }
@@ -206,6 +182,12 @@ alfred=new ArrayList<>();
     public void render(SpriteBatch batch) {
         update(Gdx.graphics.getDeltaTime(),batch);
         input();
+        this.sound=prefs.getString("musics");
+        if(sound.equals("true")&&MusicHandler.playing.isPlaying()==false)
+            MusicHandler.background.play();
+        else if(sound.equals("false")&&MusicHandler.playing.isPlaying()==true)
+            MusicHandler.background.pause();
+
         batch.begin();
 
 
@@ -226,123 +208,117 @@ alfred=new ArrayList<>();
 
 
         for(Character e:enemy){
-            if(batman.getBound().overlaps(e.getBound())){
-                batman.isDead=true;
-
-            }
-        }
-
-        for(Bullets b:bullet) {
-
-            if (!b.canMove(b.getDirection(), maze.getWalls()) ) {
-                b.isDead=true;
-
-
-            }else
+            if(batman.isDead)
             {
-                b.move(b.getDirection());
+                batman.isDead=false;
+                break;
+            }
+            if(batman.getBound().overlaps(e.getBound())){
+                batman.health--;
+                e.isDead=true;
+                batman.isDead=true;
+                addMonster(e.getType());
+                break;
             }
         }
-              for(Character a:alfred){//bumping into coins
 
-                  float x=a.getPosX()+a.width/2;
-                  float y=a.getPosY()+a.length/2;
-                  if(batman.getBound().contains(x,y)){
-                      if(!(a instanceof BatLife)) {
-                          a.isDead = true;
-                          score += 10;
-                          batman.setBulletCount(batman.getBulletCount() + 1);
-                          coin.play(0.5f);
-                      }
-                      else {
-                          timePassed=0;
-                          a.isDead=true;
-                          batman.health++;
-                          bonus.play(0.5f);
-                          life=false;
-                      }
+    for (Bullets b : bullet) {
 
-                  }
-
-              }
-        for(Character e:enemy){
-
-            for(Bullets b:bullet){
-                System.out.println(e.health);
-                if(b.getBound().overlaps(e.getBound())){
-                    e.health--;
-
-                   b.isDead=true;
-         }
+        if (!b.canMove(b.getDirection(), maze.getWalls())) {
+            b.isDead = true;
 
 
+        } else {
+            b.move(b.getDirection());
+        }
+    }
+    for (Character a : alfred) {
 
+        float x = a.getPosX() + a.width / 2;
+        float y = a.getPosY() + a.length / 2;
+        if (batman.getBound().contains(x, y)) {
+            if (!(a instanceof BatLife)) {
+                a.isDead = true;
+                score += 10;
+                batman.setBulletCount(batman.getBulletCount() + 1);
+                if(sound.equals("true"))
+                MusicHandler.coin.play(0.5f);
+            } else {
+                timePassed = 0;
+                a.isDead = true;
+                batman.health++;
+                if(sound.equals("true"))
+                MusicHandler.bonus.play(0.5f);
+                life = false;
             }
-            if (e.health<=0){
-               e.isDead=true;
-                score+=100;
-                died.play();
 
+        }
+
+    }
+    for (Character e : enemy) {
+
+        for (Bullets b : bullet) {
+            System.out.println(e.health);
+            if (b.getBound().overlaps(e.getBound())) {
+                e.health--;
+
+                b.isDead = true;
             }
-        }
-        for(Character a:alfred) {
-            if(!a.isDead)
-                batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
+
 
         }
-        for(Character e:enemy){//random move
-            if(!e.isDead)
-            batch.draw(e.getTexture(),e.getPosX(),e.getPosY(),Character.length,Character.length);
-
-            e.randomMove(maze.getWalls());
+        if (e.health <= 0) {
+            e.isDead = true;
+            score += 100;
+            if(sound.equals("true"))
+            MusicHandler.died.play();
 
         }
-        for(Bullets b:bullet) {
-            if(!b.isDead)
+    }
+    for (Character a : alfred) {
+        if (!a.isDead)
+            batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
+
+    }
+    for (Character e : enemy) {
+        if (!e.isDead)
+            batch.draw(e.getTexture(), e.getPosX(), e.getPosY(), Character.length, Character.length);
+
+        e.randomMove(maze.getWalls());
+
+    }
+    for (Bullets b : bullet) {
+        if (!b.isDead)
             batch.draw(b.getTexture(), b.getPosX(), b.getPosY(), Character.length, Character.length);
 
-        }
+    }
 
-        batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length,Character.length );
-        batch.setColor(1,1,1,0.7f);
-        if(prefs.getString("hands").equals("true"))
-           batch.draw(but
-                   , (float) (0.1*Gdx.graphics.getWidth()),0, 2 * Character.length, 2 * Character.length);
-        else
-       batch.draw(but, (float) (0.9* Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
-        batch.setColor(1,1,1,1f);
-       batch.draw(tab,0,Gdx.graphics.getHeight()-Tile.TILE_HEIGHT,Gdx.graphics.getWidth(),Tile.TILE_HEIGHT);
-       font.draw(batch,""+score,(float)(0.1314*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
-        font.draw(batch,"x"+batman.getBulletCount(),(float)(0.407*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
-        font.draw(batch,"x"+batman.health,(float)(0.627*Gdx.graphics.getWidth()),Gdx.graphics.getHeight()-Tile.TILE_HEIGHT/4);
+    batch.draw(batman.getTexture(), batman.getPosX(), batman.getPosY(), Character.length, Character.length);
+    batch.setColor(1, 1, 1, 0.7f);
+    if (prefs.getString("hands").equals("true"))
+
+        batch.draw(but
+                , (float) (0.1 * Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
+    else
+        batch.draw(but, (float) (0.9 * Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
+    batch.setColor(1, 1, 1, 1f);
+    batch.draw(tab, 0, Gdx.graphics.getHeight() - Tile.TILE_HEIGHT, Gdx.graphics.getWidth(), Tile.TILE_HEIGHT);
+    font.draw(batch, "" + score, (float) (0.1314 * Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - Tile.TILE_HEIGHT / 4);
+    font.draw(batch, "x" + batman.getBulletCount(), (float) (0.407 * Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - Tile.TILE_HEIGHT / 4);
+    font.draw(batch, "x" + batman.health, (float) (0.627 * Gdx.graphics.getWidth()), Gdx.graphics.getHeight() - Tile.TILE_HEIGHT / 4);
+
         batch.end();
-
-
-
-
-
-
     }
 
     @Override
-    public void dispose() {
-        died.dispose();
-        bonus.dispose();
-        slice.dispose();
-        playing.dispose();
-        coin.dispose();
-        batman.dispose();
-        for(Character e:enemy)
-            e.dispose();
-        for(Character a:alfred)
-            a.dispose();
+    public void dispose(){
 tab.dispose();
         but.dispose();
-font.dispose();
+
     }
     public void update(float deltaTime,SpriteBatch batch){
         timePassed+=deltaTime;
-
+clocker+=deltaTime;
         ArrayList<Bullets> tempB =new ArrayList<>();
         ArrayList<Character> tempE=new ArrayList<>();
         ArrayList<Character> tempAlfred=new ArrayList<>();
@@ -358,9 +334,14 @@ font.dispose();
         }
 
         if(batman.isDead){
-            batman.health--;
+
             if(batman.health>0)
             {   batman.isDead=false;
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Random rn = new Random();
                 int i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
                 batman.setPosX(maze.getPaths().get(i).getPosX());
@@ -369,7 +350,7 @@ font.dispose();
             }
             else{
                 StateManager.pop();
-            //    StateManager.push(new GameStates(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+               StateManager.push(new GameStates(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
             }
 
         }
@@ -444,30 +425,30 @@ font.dispose();
                     , (float) (0.1*Gdx.graphics.getWidth()),0, 2 * Character.length, 2 * Character.length);
         else
             batch.draw(but, (float) (0.9* Gdx.graphics.getWidth()), 0, 2 * Character.length, 2 * Character.length);
-        batch.draw(tab,0,Gdx.graphics.getHeight()-Tile.TILE_HEIGHT,Gdx.graphics.getWidth(),Tile.TILE_HEIGHT);
+        batch.draw(tab, 0, Gdx.graphics.getHeight() - Tile.TILE_HEIGHT, Gdx.graphics.getWidth(), Tile.TILE_HEIGHT);
         batch.end();
     }
 
-    public static float SCALE;
-    public static final int VIRTUAL_WIDTH = 320;
-
-
-    public void loadFont() {
-
-        SCALE = 1.0f * (Gdx.graphics.getWidth()) / VIRTUAL_WIDTH;
-
-        if (SCALE < 1)
-            SCALE = 1;
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("JennaSue.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = (int) (75 * SCALE);
-        font = generator.generateFont(parameter);
-        font.setColor(Color.BLACK);
-
-        font.getData().setScale((float) (1.0 / SCALE));
-
-        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        generator.dispose();
+    private void addMonster(int k)
+    {int i;
+        Random rn = new Random();
+        i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
+        switch (k){
+            case 1:
+                enemy.add(new Harley(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+                break;
+            case 2:
+                enemy.add(new Joker(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+                break;
+            case 3:
+                enemy.add(new Freez(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+                break;
+            case 4:
+                enemy.add(new Bane(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+                break;
+            case 5:
+                enemy.add(new BlackMask(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY()));
+                break;
+        }
     }
 }

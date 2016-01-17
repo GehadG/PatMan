@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.patman.mazegeneration.TiledMaze;
 import com.patman.states.GameStates;
 import com.patman.states.MenuState;
 import com.patman.states.StateManager;
@@ -19,7 +20,6 @@ import com.patman.tiles.Wall;
 
 public class MyGdxGame extends ApplicationAdapter{
 	SpriteBatch batch;
-
 	@Override
 	public void create() {
 
@@ -48,7 +48,7 @@ public class MyGdxGame extends ApplicationAdapter{
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-if(!StateManager.isEmpty())
+		if(!StateManager.isEmpty())
 		StateManager.peek().render(batch);
 
 

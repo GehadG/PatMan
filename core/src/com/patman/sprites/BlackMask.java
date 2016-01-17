@@ -16,7 +16,7 @@ public class BlackMask extends Character{
         super(posX, posY);
         this.img=new Texture("blackmask1.png");
         health=3;
-
+type=5;
     }
 
     public void move(String direction){

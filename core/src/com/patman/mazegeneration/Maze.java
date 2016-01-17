@@ -40,12 +40,7 @@ public class Maze {
 
         String[][] print = maze.getAsciiMaze("#", ".");
 
-        for (String[] row : print) {
-            for (String col : row) {
-                System.out.print(col);
-            }
-            System.out.println();
-        }
+
     }
 
     public static class MazeBuilder {

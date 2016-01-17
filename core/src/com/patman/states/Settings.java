@@ -11,7 +11,7 @@ import com.patman.tiles.Tile;
  * Created by Gehad on 29/12/2015.
  */
 public class Settings extends States {
-    Preferences prefs = Gdx.app.getPreferences("settings");
+
     private Texture music;
     private Texture leftRight;
     private Texture on;
@@ -21,7 +21,7 @@ public class Settings extends States {
     private String haaand;
     private Texture save;
     private Texture back;
-
+    Preferences prefs = Gdx.app.getPreferences("settings");
 
 
 
@@ -35,9 +35,9 @@ public class Settings extends States {
         musiiic=prefs.getString("musics");
         haaand=prefs.getString("hands");
         if(musiiic.equals("true"))
-        music=on;
-        else
         music=off;
+        else
+        music=on;
         if(haaand.equals("true"))
         leftRight=on;
         else

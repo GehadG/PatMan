@@ -2,8 +2,6 @@ package com.patman.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,23 +13,24 @@ import com.patman.tiles.Tile;
  */
 public class MenuState extends States {
    private Sprite sprite ;
+    Preferences prefs = Gdx.app.getPreferences("settings");
     private Texture start;
     private Texture settings;
     private Texture quit;
     private Texture bg;
-    private Music background;
-
+    private String sound;
     public MenuState() {
+this.sound=prefs.getString("musics");
         bg=new Texture("menu.jpg");
         sprite=new Sprite(bg);
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         start=new Texture("start.png");
         settings=new Texture("settings.png");
         quit=new Texture("exit.png");
-        background = Gdx.audio.newMusic(Gdx.files.internal("theme.mp3"));
-        background.setLooping(true);
-        background.setVolume(0.5f);
-        background.play();
+       MusicHandler. background.setLooping(true);
+        MusicHandler.background.setVolume(0.5f);
+
+
     }
     @Override
     public void input() {
@@ -70,6 +69,12 @@ public class MenuState extends States {
     @Override
     public void render(SpriteBatch batch) {
         input();
+        this.sound=prefs.getString("musics");
+        if(sound.equals("true")&&MusicHandler.background.isPlaying()==false)
+            MusicHandler.background.play();
+        else if(sound.equals("false")&&MusicHandler.background.isPlaying()==true)
+            MusicHandler.background.pause();
+
        batch.begin();
         sprite.draw(batch);
         batch.draw(start, (float)(0.63 * Gdx.graphics.getWidth()),(float)(0.5*Gdx.graphics.getHeight()),6* Tile.TILE_HEIGHT,2*Tile.TILE_HEIGHT);
@@ -84,7 +89,6 @@ public class MenuState extends States {
         start.dispose();
         quit.dispose();
         bg.dispose();
-        background.dispose();
     }
 
 }

@@ -37,7 +37,15 @@ public abstract class Character {
 
     protected Texture img;
 
-
+public Character()
+{
+    movement=Tile.TILE_HEIGHT/15;
+    this.oldMove="right";
+    this.olderMove="right";
+    bound=new Rectangle();
+    bound.set(posX,posY,width,length);
+    health=4;
+}
     public Character(int posX, int posY) {
         this.posX = posX;
         this.posY = posY;

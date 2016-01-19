@@ -58,7 +58,7 @@ public class PauseState extends States {
     @Override
     public void render(SpriteBatch batch) {
         input();
-        game.pause(batch);
+        game.drawView(batch);
         batch.begin();
         sprite.draw(batch);
         batch.draw(play, (float) (0.3146*Gdx.graphics.getWidth()), (float) ((1-0.437)*Gdx.graphics.getHeight()), (float) (0.3737*Gdx.graphics.getWidth()), (float) (0.15*Gdx.graphics.getHeight()));

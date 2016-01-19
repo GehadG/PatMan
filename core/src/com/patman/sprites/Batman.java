@@ -12,10 +12,9 @@ public class Batman extends Character {
     private static ArrayList<Texture> down=new ArrayList<>();
     private static ArrayList<Texture> left=new ArrayList<>();
     private static ArrayList<Texture> right=new ArrayList<>();
-    public static float lastDead=0;
+    private static Batman batman = new Batman();
     private int bulletCount=10;
-    public Batman(int posX, int posY) {
-        super(posX, posY);
+    private Batman() {
         this.img=new Texture("b1.png");
         dir="right";
     }
@@ -61,7 +60,9 @@ public class Batman extends Character {
         }
         updateBound();
     }
-
+public static Batman getInstance(){
+return batman;
+}
   static {
         up.add(new Texture("b9.png"));
         up.add(new Texture("b10.png"));

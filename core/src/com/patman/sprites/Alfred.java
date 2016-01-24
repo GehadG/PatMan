@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Alfred extends Character {
     public Alfred(int posX, int posY) {
         super(posX, posY);
-        img =new Texture("alfred.png");
+        img = new Texture("alfred.png");
     }
 
     @Override

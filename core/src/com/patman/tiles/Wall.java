@@ -11,7 +11,7 @@ public class Wall extends Tile {
 
     public Wall(int x, int y, int i, int j) {
         super(x, y, i, j);
-        isBreakable=true;
+        isBreakable = true;
     }
 
     @Override

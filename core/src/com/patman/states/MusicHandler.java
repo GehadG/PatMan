@@ -15,7 +15,8 @@ public class MusicHandler {
     public static Sound bonus;
     public static Sound died;
     public static Music background;
-    static{
+
+    static {
         playing = Gdx.audio.newMusic(Gdx.files.internal("playingtheme.mp3"));
         coin = Gdx.audio.newSound(Gdx.files.internal("coincollected.wav"));
         slice = Gdx.audio.newSound(Gdx.files.internal("slice.wav"));

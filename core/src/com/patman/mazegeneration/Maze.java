@@ -3,6 +3,7 @@ package com.patman.mazegeneration;
 /**
  * Created by Gehad on 24/12/2015.
  */
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -24,6 +25,7 @@ public class Maze {
             return difficulty;
         }
     }
+
     private long seed = new Random().nextLong();
     private Random random;
     private int difficulty = Difficulty.MEDIUM.getValue();
@@ -36,7 +38,7 @@ public class Maze {
     public static void main(String[] args) {
         MazeBuilder builder = new MazeBuilder();
 
-        Maze maze = builder.setSize(10,10).setDifficulty(1).saveCorrectPath(true).build();
+        Maze maze = builder.setSize(10, 10).setDifficulty(1).saveCorrectPath(true).build();
 
         String[][] print = maze.getAsciiMaze("#", ".");
 
@@ -97,7 +99,8 @@ public class Maze {
         }
 
         public MazeBuilder setDifficulty(int difficulty) {
-            if (difficulty < 1 || difficulty > 10) throw new IllegalArgumentException("Difficulty must be between 1 and 10.");
+            if (difficulty < 1 || difficulty > 10)
+                throw new IllegalArgumentException("Difficulty must be between 1 and 10.");
             maze.difficulty = difficulty;
             maze.layout = null;
             maze.startingCoord = null;
@@ -134,19 +137,19 @@ public class Maze {
                variables.
              */
             // BEGIN RANDOM CHUNK //
-            startingCoord = new Integer[] {maze.random.nextInt(sizeX), 0};
+            startingCoord = new Integer[]{maze.random.nextInt(sizeX), 0};
 
-            for (int row=0; row < sizeY; row++) {
-                for (int col=0; col < sizeX; col++) {
+            for (int row = 0; row < sizeY; row++) {
+                for (int col = 0; col < sizeX; col++) {
                     randomTable[row][col] = maze.random.nextFloat();
                 }
             }
             // END RANDOM CHUNK //
 
-            for (int i=0; i<sizeY; i++) {
+            for (int i = 0; i < sizeY; i++) {
                 Arrays.fill(pathGrid[i], -1);
 
-                for (int n=0; n<sizeX; n++) {
+                for (int n = 0; n < sizeX; n++) {
                     newLayout[i][n] = new Layout();
                 }
             }
@@ -155,10 +158,10 @@ public class Maze {
 
             buildSubPaths();
 
-            for (int path=0; path<paths.numPaths(); path++) {
+            for (int path = 0; path < paths.numPaths(); path++) {
                 paths.setPath(path);
 
-                for (int coordIndex=0; coordIndex<paths.numCoords(); coordIndex++) {
+                for (int coordIndex = 0; coordIndex < paths.numCoords(); coordIndex++) {
                     paths.setCoordIndex(coordIndex);
                     coord1 = paths.getCoord();
 
@@ -378,10 +381,10 @@ public class Maze {
             float greatestValue = -1;
             Integer[][] testCoords = new Integer[4][2];
 
-            testCoords[0] = new Integer[] {initialCoord[0], initialCoord[1] - 1}; // Up
-            testCoords[1] = new Integer[] {initialCoord[0], initialCoord[1] + 1}; // Down
-            testCoords[2] = new Integer[] {initialCoord[0] - 1, initialCoord[1]}; // Left
-            testCoords[3] = new Integer[] {initialCoord[0] + 1, initialCoord[1]}; // Right
+            testCoords[0] = new Integer[]{initialCoord[0], initialCoord[1] - 1}; // Up
+            testCoords[1] = new Integer[]{initialCoord[0], initialCoord[1] + 1}; // Down
+            testCoords[2] = new Integer[]{initialCoord[0] - 1, initialCoord[1]}; // Left
+            testCoords[3] = new Integer[]{initialCoord[0] + 1, initialCoord[1]}; // Right
 
             for (Integer[] coord : testCoords) {
                 if ((coord[0] >= 0 && coord[0] < sizeX)
@@ -397,47 +400,47 @@ public class Maze {
         }
 
         private void difficultyCalculations() {
-            double percentageTotalMain = (0.10+((difficulty/10)*0.15));
-            double percentageTotalSub = (0.05+((difficulty/10)*.20));
-            int area = sizeX*sizeY;
-            minMoves = (int) Math.round(area*percentageTotalMain);
-            maxSubPathMoves = (int) Math.round(area*percentageTotalSub);
+            double percentageTotalMain = (0.10 + ((difficulty / 10) * 0.15));
+            double percentageTotalSub = (0.05 + ((difficulty / 10) * .20));
+            int area = sizeX * sizeY;
+            minMoves = (int) Math.round(area * percentageTotalMain);
+            maxSubPathMoves = (int) Math.round(area * percentageTotalSub);
         }
     }
 
     public String[][] getAsciiMaze(String printChar, String correctChar) {
         String[][] print;
 
-        print = new String[sizeY*2+1][sizeX*2+1];
+        print = new String[sizeY * 2 + 1][sizeX * 2 + 1];
 
-        for (int i=0; i<print.length; i++) {
+        for (int i = 0; i < print.length; i++) {
             Arrays.fill(print[i], " ");
         }
 
         print[0][0] = printChar;
 
-        for (int row=0; row<sizeY; row++) {
-            for (int col=0; col<sizeX; col++) {
+        for (int row = 0; row < sizeY; row++) {
+            for (int col = 0; col < sizeX; col++) {
                 if (row == 0) {
-                    print[0][1+col*2+1] = printChar;
+                    print[0][1 + col * 2 + 1] = printChar;
                     if (layout[row][col].borderIs(Layout.Border.TOP, Layout.Type.WALL)) {
-                        print[0][1+col*2] = printChar;
+                        print[0][1 + col * 2] = printChar;
                     }
                 }
 
                 if (col == 0) {
-                    print[1+row*2+1][0] = printChar;
+                    print[1 + row * 2 + 1][0] = printChar;
                     if (layout[row][col].borderIs(Layout.Border.LEFT, Layout.Type.WALL)) {
-                        print[1+row*2][0] = printChar;
+                        print[1 + row * 2][0] = printChar;
                     }
                 }
 
-                print[1+row*2+1][1+col*2+1] = printChar;
+                print[1 + row * 2 + 1][1 + col * 2 + 1] = printChar;
                 if (layout[row][col].borderIs(Layout.Border.BOTTOM, Layout.Type.WALL)) {
-                    print[1+row*2+1][1+col*2] = printChar;
+                    print[1 + row * 2 + 1][1 + col * 2] = printChar;
                 }
                 if (layout[row][col].borderIs(Layout.Border.RIGHT, Layout.Type.WALL)) {
-                    print[1+row*2][1+col*2+1] = printChar;
+                    print[1 + row * 2][1 + col * 2 + 1] = printChar;
                 }
             }
         }

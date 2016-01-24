@@ -11,6 +11,7 @@ public class Layout {
         LEFT,
         RIGHT
     }
+
     public static enum Type {
         OPEN,
         ENTRANCE,

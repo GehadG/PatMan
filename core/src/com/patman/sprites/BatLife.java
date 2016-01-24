@@ -8,6 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 public class BatLife extends Alfred {
     public BatLife(int posX, int posY) {
         super(posX, posY);
-        img=new Texture("batlife.png");
+        img = new Texture("batlife.png");
     }
 }

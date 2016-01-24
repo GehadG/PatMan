@@ -15,25 +15,25 @@ public class MonsterFactory {
         this.maze = maze;
     }
 
-    public com.patman.sprites.Character addMonster(int k)
-    {int i;
+    public com.patman.sprites.Character addMonster(int k) {
+        int i;
         Random rn = new Random();
-        i =Math.abs(rn.nextInt() % maze.getPaths().size()) ;
-        switch (k){
+        i = Math.abs(rn.nextInt() % maze.getPaths().size());
+        switch (k) {
             case 1:
-                return new Harley(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
+                return new Harley(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY());
 
             case 2:
-                return new Joker(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
+                return new Joker(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY());
 
             case 3:
-                return new Freez(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
+                return new Freez(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY());
 
             case 4:
-                return new Bane(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
+                return new Bane(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY());
 
             default:
-                return new BlackMask(maze.getPaths().get(i).getPosX(),maze.getPaths().get(i).getPosY());
+                return new BlackMask(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY());
 
         }
     }

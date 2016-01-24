@@ -30,7 +30,7 @@ public class PathList extends ArrayList<ArrayList<Integer[]>> {
     public PathList addSubPath() {
         subPathLevel++;
 
-        connections.get(currentPath).add(new Integer[] {this.size(), currentCoordIndex, subPathLevel});
+        connections.get(currentPath).add(new Integer[]{this.size(), currentCoordIndex, subPathLevel});
         currentParentPath = currentPath;
         currentSubPath = connections.get(currentPath).size() - 1;
         addPath();
@@ -49,7 +49,7 @@ public class PathList extends ArrayList<ArrayList<Integer[]>> {
         return this;
     }
 
-    public PathList setSubPath (int parentPath, int subPath, int level) {
+    public PathList setSubPath(int parentPath, int subPath, int level) {
         subPathLevel = level;
         currentParentPath = parentPath;
         currentSubPath = subPath;
@@ -162,8 +162,8 @@ public class PathList extends ArrayList<ArrayList<Integer[]>> {
         currentSubPath = 0;
         subPathLevel = 0;
 
-        for (int i=0; i<this.size(); i++) {
-            for (int n=0; n<connections.get(i).size(); n++) {
+        for (int i = 0; i < this.size(); i++) {
+            for (int n = 0; n < connections.get(i).size(); n++) {
                 if (connections.get(i).get(n)[0] == currentPath) {
                     currentParentPath = i;
                     currentSubPath = n;

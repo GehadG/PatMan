@@ -8,49 +8,49 @@ import java.util.ArrayList;
  * Created by Mariem on 24/12/2015.
  */
 public class Bane extends Character {
-    private static ArrayList<Texture> up=new ArrayList<>();
-    private static ArrayList<Texture> down=new ArrayList<>();
-    private static ArrayList<Texture> left=new ArrayList<>();
-    private static ArrayList<Texture> right=new ArrayList<>();
+    private static ArrayList<Texture> up = new ArrayList<>();
+    private static ArrayList<Texture> down = new ArrayList<>();
+    private static ArrayList<Texture> left = new ArrayList<>();
+    private static ArrayList<Texture> right = new ArrayList<>();
+
     public Bane(int posX, int posY) {
         super(posX, posY);
-        this.img=new Texture("Bane1.png");
-        health=5;
-type=4;
+        this.img = new Texture("Bane1.png");
+        health = 5;
+        type = 4;
 
     }
 
-    public void move(String direction){
-        switch(direction){
+    public void move(String direction) {
+        switch (direction) {
             case "up":
-                posY=posY+movement;
-                if(frameCounterUp++%8==0)
-                    img=up.get((frameCounterUp++)%up.size());
+                posY = posY + movement;
+                if (frameCounterUp++ % 8 == 0)
+                    img = up.get((frameCounterUp++) % up.size());
 
                 break;
             case "down":
-                posY=posY-movement;
-                if(frameCounterDown++%8==0)
-                    img=down.get((frameCounterDown++)%down.size());
+                posY = posY - movement;
+                if (frameCounterDown++ % 8 == 0)
+                    img = down.get((frameCounterDown++) % down.size());
 
                 break;
             case "left":
-                posX=posX-movement;
-                if(frameCounterLeft++%5==0)
-                    img=left.get((frameCounterLeft++)%left.size());
+                posX = posX - movement;
+                if (frameCounterLeft++ % 5 == 0)
+                    img = left.get((frameCounterLeft++) % left.size());
                 break;
             case "right":
-                posX=posX+movement;
-                if(frameCounterRight++%5==0)
-                    img=right.get((frameCounterRight++)%right.size());
+                posX = posX + movement;
+                if (frameCounterRight++ % 5 == 0)
+                    img = right.get((frameCounterRight++) % right.size());
 
                 break;
         }
         updateBound();
     }
 
-static
-{
+    static {
         up.add(new Texture("Bane9.png"));
         up.add(new Texture("Bane10.png"));
         up.add(new Texture("Bane12.png"));

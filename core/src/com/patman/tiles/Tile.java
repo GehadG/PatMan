@@ -6,11 +6,11 @@ import com.badlogic.gdx.math.Rectangle;
 /**
  * Created by Gehad on 23/12/2015.
  */
-public abstract class  Tile {
-    public static  int TILE_WIDTH =160;
-    public static  int TILE_HEIGHT =160;
-    private  int x;
-    private  int y;
+public abstract class Tile {
+    public static int TILE_WIDTH = 160;
+    public static int TILE_HEIGHT = 160;
+    private int x;
+    private int y;
 
     public int getX() {
         return x;
@@ -28,27 +28,27 @@ public abstract class  Tile {
         this.y = y;
     }
 
-    public  boolean isBreakable=false;
-    public int count=2;
+    public boolean isBreakable = false;
+    public int count = 2;
+
     public Rectangle getBound() {
         return bound;
     }
 
-    private int posX,posY;
+    private int posX, posY;
     protected Rectangle bound;
-    public Tile(int x,int y,int i, int j) {
-        this.posX=x;
-        this.posY=y;
-        this.x=i;
-        this.y=j;
 
-            this.bound = new Rectangle(x,y,Tile.TILE_WIDTH,Tile.TILE_HEIGHT);
+    public Tile(int x, int y, int i, int j) {
+        this.posX = x;
+        this.posY = y;
+        this.x = i;
+        this.y = j;
+
+        this.bound = new Rectangle(x, y, Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 
     }
+
     public abstract void dispose();
-
-
-
 
 
     public int getPosX() {
@@ -66,6 +66,7 @@ public abstract class  Tile {
     public void setPosY(int posY) {
         this.posY = posY;
     }
+
     public abstract Texture getTexture();
 
 

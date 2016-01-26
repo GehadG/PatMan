@@ -401,7 +401,7 @@ public class GameStates extends States {
                 if (a instanceof bombs) {
                     a.isDead = true;
                     batman.isDead= true;
-                    batman.health--;
+                    batman.health--;//
                     if (sound.equals("true"))
                         MusicHandler.coin.play(0.5f);
                 }

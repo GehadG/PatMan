@@ -68,7 +68,7 @@ public class GameStates extends States {
         font.setColor(Color.BLACK);
         font.getData().scale(Gdx.graphics.getDensity());
         Gdx.input.setInputProcessor(controller);
-        pool.setMaxPoolSize(5);
+        pool.setMaxPoolSize(3);
         randEnem();
         MusicHandler.playing.setLooping(true);
         MusicHandler.playing.setVolume(0.2f);
@@ -89,7 +89,7 @@ public class GameStates extends States {
         batman.setPosY(maze.getPaths().get(i).getPosY());
         batman.health = 4;
         enemy = new ArrayList<>();
-        bombb=new ArrayList<>();
+        bombb = new ArrayList<>();
         int i2 = 1 + Math.abs(rn.nextInt() % 3);
 
         for (int j = 0; j < i2; j++) {
@@ -104,16 +104,29 @@ public class GameStates extends States {
             i = Math.abs(rn.nextInt() % maze.getPaths().size());
             alfred.add(new Alfred(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY()));
         }
-        for (int h = 0; h < 5; h++) {
+        for (int h = 0; h < 3; h++) {
             i = Math.abs(rn.nextInt() % maze.getPaths().size());
-            bombs b=pool.acquire();
-            if(b==null){
+            bombs b = pool.acquire();
+            if (b == null) {
                 continue;
             }
+            b.isDead = false;
             b.setPosX(maze.getPaths().get(i).getPosX());
             b.setPosY(maze.getPaths().get(i).getPosY());
             bombb.add(b);
             pool.release(b);
+        }
+        for (int p = 0; p < 3; p++) {
+            i = Math.abs(rn.nextInt() % maze.getPaths().size());
+            Coinbomb b = pool.acquireC();
+            if (b == null) {
+                continue;
+            }
+            b.isDead = false;
+            b.setPosX(maze.getPaths().get(i).getPosX());
+            b.setPosY(maze.getPaths().get(i).getPosY());
+            bombb.add(b);
+            pool.releaseC(b);
         }
     }
 
@@ -216,6 +229,7 @@ public class GameStates extends States {
         MusicHandler.died.dispose();
         MusicHandler.slice.dispose();
         MusicHandler.background.dispose();
+        MusicHandler.bomb.dispose();
     }
 
     public void update(float deltaTime, SpriteBatch batch) {
@@ -400,24 +414,38 @@ public class GameStates extends States {
             if (batman.getBound().contains(x, y)) {
                 if (a instanceof bombs) {
                     a.isDead = true;
-                    batman.isDead= true;
+                    batman.isDead = true;
                     batman.health--;//
                     if (sound.equals("true"))
-                        MusicHandler.coin.play(0.5f);
+                        MusicHandler.bomb.play(0.5f);
+                } else if (a instanceof Coinbomb) {
+                    a.isDead = true;
+                    batman.setBulletCount(batman.getBulletCount() - 2);
+                    if (sound.equals("true"))
+                        MusicHandler.bomb.play(0.5f);
                 }
             }
 
         }
+        for (Character a : bombb) {
+            float x = a.getPosX() + a.width / 2;
+            float y = a.getPosY() + a.length / 2;
+            for (Bullets b : bullet) {
+                if (b.getBound().contains(x,y)) {
+                    a.isDead = true;
+                    b.isDead = true;
+                    if (sound.equals("true"))
+                        MusicHandler.died.play();
+                }
+            }
+        }
         for (Character e : enemy) {
-
             for (Bullets b : bullet) {
                 System.out.println(e.health);
                 if (b.getBound().overlaps(e.getBound())) {
                     e.health--;
                     b.isDead = true;
                 }
-
-
             }
             if (e.health <= 0) {
                 e.isDead = true;

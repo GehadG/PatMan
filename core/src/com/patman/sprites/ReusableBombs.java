@@ -9,6 +9,8 @@ import java.util.Random;
 public class ReusableBombs {
     private ArrayList<bombs> usedbombs;
     private ArrayList<bombs> freebombs;
+    private ArrayList<Coinbomb>usedCbombs;
+    private ArrayList<Coinbomb>freeCbombs;
     private int size;
     private static ReusableBombs instance;
     private int x;
@@ -17,6 +19,8 @@ public class ReusableBombs {
     public ReusableBombs() {
         this.usedbombs = new ArrayList<bombs>();
         this.freebombs = new ArrayList<bombs>();
+        this.usedCbombs= new ArrayList<Coinbomb>();
+        this.freeCbombs= new ArrayList<Coinbomb>();
     }
 
     public static ReusableBombs getInstance() {
@@ -33,6 +37,14 @@ public class ReusableBombs {
         } else
             return null;
     }
+    public Coinbomb acquireC() {
+        if (!freeCbombs.isEmpty()) {
+            Coinbomb object = freeCbombs.remove(0);
+            usedCbombs.add(object);
+            return object;
+        } else
+            return null;
+    }
 
     public void release(bombs object) {
         if (usedbombs.remove(object))
@@ -40,12 +52,18 @@ public class ReusableBombs {
         else
             System.err.println("Error, no such object in the pool");
     }
+    public void releaseC(Coinbomb object) {
+        if (usedCbombs.remove(object))
+            freeCbombs.add(object);
+        else
+            System.err.println("Error, no such object in the pool");
+    }
 
     public void setMaxPoolSize(int size) {
         this.size = size;
-        Random rn = new Random();
         for (int i = 0; i < size; i++){
             freebombs.add(new bombs());
+            freeCbombs.add(new Coinbomb());
     }}
 
     public int getX() {

@@ -393,6 +393,21 @@ public class GameStates extends States {
             }
 
         }
+        for (Character a : bombb) {
+
+            float x = a.getPosX() + a.width / 2;
+            float y = a.getPosY() + a.length / 2;
+            if (batman.getBound().contains(x, y)) {
+                if (a instanceof bombs) {
+                    a.isDead = true;
+                    batman.isDead= true;
+                    batman.health--;
+                    if (sound.equals("true"))
+                        MusicHandler.coin.play(0.5f);
+                }
+            }
+
+        }
         for (Character e : enemy) {
 
             for (Bullets b : bullet) {

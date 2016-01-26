@@ -1,6 +1,7 @@
 package com.patman.sprites;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Mahmoud on 1/24/2016.
@@ -42,9 +43,10 @@ public class ReusableBombs {
 
     public void setMaxPoolSize(int size) {
         this.size = size;
-        for (int i = 0; i < size; i++)
-            freebombs.add(new bombs(getX(),getY()));
-    }
+        Random rn = new Random();
+        for (int i = 0; i < size; i++){
+            freebombs.add(new bombs());
+    }}
 
     public int getX() {
         return x;
@@ -60,6 +62,22 @@ public class ReusableBombs {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public ArrayList<bombs> getUsedbombs() {
+        return usedbombs;
+    }
+
+    public void setUsedbombs(ArrayList<bombs> usedbombs) {
+        this.usedbombs = usedbombs;
+    }
+
+    public ArrayList<bombs> getFreebombs() {
+        return freebombs;
+    }
+
+    public void setFreebombs(ArrayList<bombs> freebombs) {
+        this.freebombs = freebombs;
     }
 }
 

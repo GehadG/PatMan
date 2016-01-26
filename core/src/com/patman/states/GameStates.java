@@ -44,6 +44,7 @@ public class GameStates extends States {
     private int score = 0;
     private ArrayList<Character> enemy;
     private ArrayList<Character> alfred;
+    private ArrayList<Character> bombb;
     private ArrayList<Bullets> bullet;
     private DirListener controller;
     private Bullets button;
@@ -57,6 +58,7 @@ public class GameStates extends States {
         sound = prefs.getString("musics");
         but = new Texture("shoot.png");
         alfred = new ArrayList<>();
+        bombb = new ArrayList<>();
         timePassed = 0;
         life = false;
         initControl();
@@ -66,10 +68,10 @@ public class GameStates extends States {
         font.setColor(Color.BLACK);
         font.getData().scale(Gdx.graphics.getDensity());
         Gdx.input.setInputProcessor(controller);
+        pool.setMaxPoolSize(5);
         randEnem();
         MusicHandler.playing.setLooping(true);
         MusicHandler.playing.setVolume(0.2f);
-        pool.setMaxPoolSize(5);
         this.sound = prefs.getString("musics");
         if (sound.equals("true") && MusicHandler.playing.isPlaying() == false)
             MusicHandler.playing.play();
@@ -87,7 +89,7 @@ public class GameStates extends States {
         batman.setPosY(maze.getPaths().get(i).getPosY());
         batman.health = 4;
         enemy = new ArrayList<>();
-
+        bombb=new ArrayList<>();
         int i2 = 1 + Math.abs(rn.nextInt() % 3);
 
         for (int j = 0; j < i2; j++) {
@@ -102,7 +104,17 @@ public class GameStates extends States {
             i = Math.abs(rn.nextInt() % maze.getPaths().size());
             alfred.add(new Alfred(maze.getPaths().get(i).getPosX(), maze.getPaths().get(i).getPosY()));
         }
-
+        for (int h = 0; h < 5; h++) {
+            i = Math.abs(rn.nextInt() % maze.getPaths().size());
+            bombs b=pool.acquire();
+            if(b==null){
+                continue;
+            }
+            b.setPosX(maze.getPaths().get(i).getPosX());
+            b.setPosY(maze.getPaths().get(i).getPosY());
+            bombb.add(b);
+            pool.release(b);
+        }
     }
 
     private void initControl() {
@@ -294,6 +306,11 @@ public class GameStates extends States {
         for (Character a : alfred) {
             if (!a.isDead)
                 batch.draw(a.getTexture(), a.getPosX(), a.getPosY(), Character.length, Character.length);
+
+        }
+        for (Character b : bombb) {
+            if (!b.isDead)
+                batch.draw(b.getTexture(), b.getPosX(), b.getPosY(), Character.length, Character.length);
 
         }
 

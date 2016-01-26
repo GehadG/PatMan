@@ -1,0 +1,64 @@
+package com.patman.sprites;
+
+import com.badlogic.gdx.graphics.Texture;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Mariem on 24/12/2015.
+ */
+public class Freez extends Character {
+    private static ArrayList<Texture> up = new ArrayList<>();
+    private static ArrayList<Texture> down = new ArrayList<>();
+    private static ArrayList<Texture> left = new ArrayList<>();
+    private static ArrayList<Texture> right = new ArrayList<>();
+
+    public Freez(int posX, int posY) {
+        super(posX, posY);
+        this.img = new Texture("freez1.png");
+        health = 1;
+        type = 3;
+    }
+
+    public void move(String direction) {
+        switch (direction) {
+            case "up":
+                posY = posY + movement;
+                if (frameCounterUp++ % 8 == 0)
+                    img = up.get((frameCounterUp++) % up.size());
+
+                break;
+            case "down":
+                posY = posY - movement;
+                if (frameCounterDown++ % 8 == 0)
+                    img = down.get((frameCounterDown++) % down.size());
+
+                break;
+            case "left":
+                posX = posX - movement;
+                if (frameCounterLeft++ % 5 == 0)
+                    img = left.get((frameCounterLeft++) % left.size());
+                break;
+            case "right":
+                posX = posX + movement;
+                if (frameCounterRight++ % 5 == 0)
+                    img = right.get((frameCounterRight++) % right.size());
+
+                break;
+        }
+        updateBound();
+    }
+
+    static {
+        up.add(new Texture("freez9.png"));
+        up.add(new Texture("freez10.png"));
+        up.add(new Texture("freez12.png"));
+        down.add(new Texture("freez5.png"));
+        down.add(new Texture("freez6.png"));
+        down.add(new Texture("freez8.png"));
+        right.add(new Texture("freez1.png"));
+        right.add(new Texture("freez2.png"));
+        left.add(new Texture("freez3.png"));
+        left.add(new Texture("freez4.png"));
+    }
+}

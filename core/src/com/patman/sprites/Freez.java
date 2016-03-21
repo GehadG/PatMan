@@ -16,6 +16,8 @@ public class Freez extends Character {
     public Freez(int posX, int posY) {
         super(posX, posY);
         this.img = new Texture("freez1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         health = 1;
         type = 3;
     }
@@ -48,8 +50,7 @@ public class Freez extends Character {
         }
         updateBound();
     }
-
-    static {
+    protected void loadTextures() {
         up.add(new Texture("freez9.png"));
         up.add(new Texture("freez10.png"));
         up.add(new Texture("freez12.png"));

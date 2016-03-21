@@ -11,4 +11,5 @@ eclipse.project {
 }
 dependencies {
 
+    compile 'com.parse:parse-android:1.13.1-SNAPSHOT'
 }

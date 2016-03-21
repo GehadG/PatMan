@@ -342,5 +342,6 @@ move(oldMove);
         this.img.dispose();
 
     }
+    protected abstract void loadTextures();
 
 }

@@ -13,4 +13,9 @@ public class Coinbomb extends Character {
     public void move(String direction) {
 
     }
+
+    @Override
+    protected void loadTextures() {
+
+    }
 }

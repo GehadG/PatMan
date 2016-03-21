@@ -16,6 +16,8 @@ public class Joker extends Character {
     public Joker(int posX, int posY) {
         super(posX, posY);
         this.img = new Texture("joker1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         health = 4;
         type = 2;
 
@@ -50,7 +52,7 @@ public class Joker extends Character {
         updateBound();
     }
 
-    static {
+    protected void loadTextures() {
         up.add(new Texture("joker9.png"));
         up.add(new Texture("joker10.png"));
         up.add(new Texture("joker12.png"));

@@ -47,6 +47,11 @@ public class Bullets extends Character {
     }
 
     @Override
+    protected void loadTextures() {
+
+    }
+
+    @Override
     public boolean canMove(String direction, ArrayList<Tile> walls) {
         Rectangle testBound = new Rectangle();
         switch (direction) {

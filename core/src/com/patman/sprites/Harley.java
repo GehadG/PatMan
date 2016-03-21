@@ -16,6 +16,8 @@ public class Harley extends Character {
     public Harley(int posX, int posY) {
         super(posX, posY);
         this.img = new Texture("harley1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         health = 2;
         type = 1;
 
@@ -50,7 +52,7 @@ public class Harley extends Character {
         updateBound();
     }
 
-    static {
+    protected void loadTextures() {
         up.add(new Texture("harley9.png"));
         up.add(new Texture("harley10.png"));
         up.add(new Texture("harley12.png"));

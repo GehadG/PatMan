@@ -17,6 +17,8 @@ public class Batman extends Character {
 
     private Batman() {
         this.img = new Texture("b1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         dir = "right";
     }
 
@@ -68,7 +70,7 @@ public class Batman extends Character {
         return batman;
     }
 
-    static {
+    protected void loadTextures(){
         up.add(new Texture("b9.png"));
         up.add(new Texture("b10.png"));
         up.add(new Texture("b12.png"));

@@ -16,4 +16,9 @@ public class bombs extends Character {
     public void move(String direction) {
 
     }
+
+    @Override
+    protected void loadTextures() {
+
+    }
 }

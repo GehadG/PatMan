@@ -16,6 +16,8 @@ public class BlackMask extends Character {
     public BlackMask(int posX, int posY) {
         super(posX, posY);
         this.img = new Texture("blackmask1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         health = 3;
         type = 5;
     }
@@ -49,7 +51,7 @@ public class BlackMask extends Character {
         updateBound();
     }
 
-    static {
+    protected void loadTextures() {
         up.add(new Texture("blackmask9.png"));
         up.add(new Texture("blackmask10.png"));
         up.add(new Texture("blackmask12.png"));

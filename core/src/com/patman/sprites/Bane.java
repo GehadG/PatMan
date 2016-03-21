@@ -16,6 +16,8 @@ public class Bane extends Character {
     public Bane(int posX, int posY) {
         super(posX, posY);
         this.img = new Texture("Bane1.png");
+        if(up.isEmpty()||up.get(0).equals(null))
+            loadTextures();
         health = 5;
         type = 4;
 
@@ -50,7 +52,7 @@ public class Bane extends Character {
         updateBound();
     }
 
-    static {
+    protected void loadTextures() {
         up.add(new Texture("Bane9.png"));
         up.add(new Texture("Bane10.png"));
         up.add(new Texture("Bane12.png"));

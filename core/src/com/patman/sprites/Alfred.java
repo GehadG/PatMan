@@ -15,4 +15,9 @@ public class Alfred extends Character {
     public void move(String direction) {
 
     }
+
+    @Override
+    protected void loadTextures() {
+
+    }
 }

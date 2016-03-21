@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.parse.ParseObject;
 import com.patman.mazegeneration.TiledMaze;
 import com.patman.states.GameStates;
 import com.patman.states.MenuState;
